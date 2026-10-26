@@ -1,0 +1,17 @@
+node_modules/
+dist/
+dist-starter/
+.slidev/
+.slidev-check/
+.work/
+test-results/
+playwright-report/
+*.tgz
+*.pptx
+*.ppt
+*.pdf
+*.ttf
+*.otf
+.env
+.env.*
+.DS_Store

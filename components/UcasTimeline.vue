@@ -1,0 +1,2 @@
+<script setup lang="ts">defineProps<{ items: { date: string; title: string; description?: string }[] }>()</script>
+<template><ol class="ucas-timeline"><li v-for="(item,index) in items" :key="index"><span class="ucas-timeline-date">{{ item.date }}</span><span class="ucas-timeline-dot" aria-hidden="true" /><h3>{{ item.title }}</h3><p v-if="item.description">{{ item.description }}</p></li></ol></template>

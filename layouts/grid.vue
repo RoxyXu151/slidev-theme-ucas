@@ -1,0 +1,2 @@
+<script setup lang="ts">import UcasFrame from '../components/UcasFrame.vue'</script>
+<template><UcasFrame kind="grid"><div class="ucas-heading"><slot /></div><div class="ucas-grid"><div><slot name="first" /></div><div><slot name="second" /></div><div><slot name="third" /></div><div><slot name="fourth" /></div></div><div v-if="$slots.note" class="ucas-note"><slot name="note" /></div></UcasFrame></template>

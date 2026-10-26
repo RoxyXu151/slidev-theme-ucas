@@ -1,0 +1,2 @@
+<script setup lang="ts">defineProps<{ items: { value: string | number; label: string; detail?: string }[] }>()</script>
+<template><dl class="ucas-metrics" :style="{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }"><div v-for="(item,index) in items" :key="index"><dt>{{ item.label }}</dt><dd>{{ item.value }}</dd><dd v-if="item.detail" class="ucas-metric-detail">{{ item.detail }}</dd></div></dl></template>

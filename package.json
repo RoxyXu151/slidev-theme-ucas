@@ -1,0 +1,96 @@
+{
+  "name": "slidev-theme-ucas",
+  "version": "0.1.0",
+  "description": "中国科学院大学 Slidev 多风格学术主题 · University of Chinese Academy of Sciences",
+  "type": "module",
+  "license": "MIT",
+  "author": "Wenbin Xu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RoxyXu151/slidev-theme-ucas.git"
+  },
+  "homepage": "https://roxyxu151.github.io/slidev-theme-ucas/",
+  "bugs": "https://github.com/RoxyXu151/slidev-theme-ucas/issues",
+  "keywords": [
+    "slidev",
+    "slidev-theme",
+    "ucas",
+    "中国科学院大学",
+    "国科大",
+    "academic",
+    "thesis"
+  ],
+  "files": [
+    "assets",
+    "components",
+    "composables",
+    "layouts",
+    "styles",
+    "docs",
+    ".agents/skills/ucas-slidev",
+    "example.md",
+    "slides.md",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "NOTICE.md",
+    "AGENTS.md"
+  ],
+  "engines": {
+    "node": ">=22.18.0",
+    "slidev": ">=53.0.0"
+  },
+  "scripts": {
+    "dev": "slidev example.md",
+    "dev:starter": "slidev slides.md",
+    "build": "slidev build example.md",
+    "build:starter": "slidev build slides.md --out dist-starter",
+    "build:site": "node scripts/build_site.mjs",
+    "create:deck": "node .agents/skills/ucas-slidev/scripts/init_deck.mjs",
+    "check": "node .agents/skills/ucas-slidev/scripts/check_deck.mjs",
+    "test": "playwright test",
+    "test:skill": "node --test tests/skill.test.mjs tests/checker.test.mjs",
+    "export": "slidev export slides.md --output slides.pdf",
+    "export:example": "slidev export example.md --output example.pdf"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@slidev/cli": "53.0.0",
+    "@slidev/parser": "53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "playwright-chromium": "^1.61.1",
+    "vue": "^3.5.42"
+  },
+  "overrides": {
+    "floating-vue": "5.2.2",
+    "dompurify": "^3.4.17",
+    "image-size": "^2.0.3"
+  },
+  "slidev": {
+    "colorSchema": "light",
+    "defaults": {
+      "aspectRatio": "16/9",
+      "canvasWidth": 1280,
+      "transition": "fade",
+      "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23174994'/%3E%3C/svg%3E",
+      "fonts": {
+        "provider": "none",
+        "sans": "Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif",
+        "serif": "Noto Serif CJK SC, serif",
+        "mono": "Consolas, monospace",
+        "local": [
+          "Microsoft YaHei",
+          "PingFang SC",
+          "Noto Sans CJK SC",
+          "Noto Serif CJK SC",
+          "Consolas"
+        ]
+      },
+      "themeConfig": {
+        "style": "minimal-blue",
+        "footer": "中国科学院大学",
+        "showPageNumber": true
+      }
+    }
+  }
+}
