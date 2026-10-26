@@ -97,7 +97,7 @@
 .ucas-cover.ucas-style-diagonal .ucas-cover-content { left:65px; right:37%; top:35%; color:white; }
 .ucas-cover.ucas-style-diagonal h1 { font-size:52px; }
 .ucas-cover.ucas-style-night .ucas-cover-wash { background:linear-gradient(#06101e9c,#07102088),repeating-linear-gradient(45deg,#ffffff06 0 2px,transparent 3px 9px); }
-.ucas-cover.ucas-style-night::after { content:''; position:absolute; width:280px; height:320px; border:3px solid var(--ucas-accent); top:125px; left:calc(50% - 140px); }
+.ucas-cover.ucas-style-night::after { content:''; position:absolute; width:280px; height:360px; border:3px solid var(--ucas-accent); top:125px; left:calc(50% - 140px); }
 .ucas-cover.ucas-style-night .ucas-cover-content { top:36%; left:80px; right:80px; color:white; }
 .ucas-cover.ucas-style-night .ucas-cover-title { align-items:center; text-align:center; }
 .ucas-cover.ucas-style-night h1 { font-size:48px; background:#0a172a66; padding:10px 28px; }
