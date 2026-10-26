@@ -86,7 +86,7 @@
 .ucas-cover-wash { position:absolute; inset:0; }
 .ucas-cover:is(.ucas-style-tech,.ucas-style-diagonal,.ucas-style-night,.ucas-style-autumn,.ucas-style-sunset) .ucas-cover-title { background:none; text-align:left; align-items:flex-start; padding:0; min-height:0; }
 .ucas-cover:is(.ucas-style-tech,.ucas-style-diagonal,.ucas-style-night,.ucas-style-autumn,.ucas-style-sunset) .ucas-cover-meta { margin:36px 0 0; justify-content:flex-start; }
-.ucas-cover.ucas-style-tech .ucas-cover-photo { top:-90px; height:calc(100% + 90px); width:55%; clip-path:polygon(0 0,73% 0,100% 100%,0 100%); }
+.ucas-cover.ucas-style-tech .ucas-cover-photo { top:-90px; height:calc(100% + 90px); width:55%; object-position:right center; clip-path:polygon(0 0,73% 0,100% 100%,0 100%); }
 .ucas-cover.ucas-style-tech::after { content:''; position:absolute; top:0; right:0; width:160px; height:210px; background:var(--ucas-primary); clip-path:polygon(0 0,100% 0,100% 100%); }
 .ucas-cover.ucas-style-tech > .ucas-brand { left:57%; top:45px; width:305px; }
 .ucas-cover.ucas-style-tech .ucas-cover-content { left:53%; right:5%; top:33%; color:var(--ucas-primary); }
@@ -198,3 +198,6 @@
 .ucas-timeline h3 { margin:0 0 12px; }
 .ucas-timeline p { font-size:22px; line-height:1.7; }
 @media print { .slidev-layout { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+
+/* Keep the original photographic credit visible on night covers. */
+.ucas-cover.ucas-style-night .ucas-cover-photo { object-position:center top; }
