@@ -27,13 +27,20 @@ jobs:
       - run: npm run check -- slides.md --strict
       - run: npm test
       - run: npm run export:example -- --executable-path /usr/bin/google-chrome
+      - run: node scripts/verify_pptx.mjs example.pptx --source example.md --require-text
+      - name: Verify the theme default without a format flag
+        run: npx slidev export slides.md --output slides.pptx --executable-path /usr/bin/google-chrome
+      - run: node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text
+      - run: npm run export:example:pdf -- --executable-path /usr/bin/google-chrome
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: theme-preview
           include-hidden-files: true
           path: |
+            example.pptx
             example.pdf
+            slides.pptx
             test-results/
             .slidev-check/
           retention-days: 7

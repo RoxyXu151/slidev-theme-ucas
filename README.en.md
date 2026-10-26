@@ -58,7 +58,7 @@ Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Adjust the 
 Install the fixed GitHub release archive. This project does not assume that a similarly named npm package is ours.
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz
 ```
 
 ```yaml
@@ -101,4 +101,8 @@ Add `--browser chrome` when using an existing Chrome installation. Linux may nee
 
 The checker writes HTML, JSON and page screenshots under `.slidev-check/<entry-name>/`. It checks boundaries, header/sidebar/footer collisions, missing images, clipping, long titles and TOC targets. It does not validate research facts, every animation state or PPTX output.
 
-`npm run build:site -- --base /slidev-theme-ucas/` builds Pages with direct slide URLs. `npm run test:skill` checks initialization and fault detection; `npm test` checks rendering, independent installation and scenarios. `npm run export:example` exports the full showcase to PDF.
+`npm run build:site -- --base /slidev-theme-ucas/` builds Pages with direct slide URLs. `npm run test:skill` checks initialization and fault detection; `npm test` checks rendering, independent installation and scenarios. `npm run export:example` exports the full showcase to editable PPTX; `npm run export:example:pdf` exports PDF.
+
+`npm run export` defaults to **editable PPTX** (`slides.pptx`). Use `npm run export:pdf` for `slides.pdf`. The theme also defaults Slidev export to `pptx-editable`; an explicit format overrides it. Text, basic shapes and images remain editable where supported. The showcase's complex formulas become images; tables become editable text and shapes rather than native PowerPoint tables. Gradients and clipping may also become images, and recipients need the corresponding fonts. Inspect the actual PPTX and keep Markdown as the source for future Slidev edits.
+
+The built-in browser `/export` page still produces image-based PPTX and does not use the CLI format default. Use `npm run export` for editable PPTX.

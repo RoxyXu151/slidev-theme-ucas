@@ -5,7 +5,7 @@ description: Create and edit University of Chinese Academy of Sciences (中国�
 
 # 国科大 Slidev 幻灯片
 
-使用 `slidev-theme-ucas` 交付可编辑 Markdown、实际运行的网页预览，以及用户要求的 PDF。保留已有演示内容与用户选定的风格。
+使用 `slidev-theme-ucas` 交付可编辑 Markdown、实际运行的网页预览，默认可编辑 PPTX，以及用户要求的 PDF 等导出物。保留已有演示内容与用户选定的风格。
 
 ## 创建与编辑
 
@@ -34,6 +34,8 @@ node "<skill-dir>/scripts/init_deck.mjs" "<project-dir>" --template paper --styl
 
 读取 `.slidev-check/<源稿名>/report.json` 和逐页截图，修正越界、遮挡、缺图与目录错误后重跑。完成标准是错误均已处理，提醒已修正或给出明确人工核查说明。不要删除检查、隐藏正文或缩小文字以求通过。检查器不验证研究事实、所有点击动画或 PPTX 排版。
 
-运行 `npm run build`，人工看中文换行、图像与导航。需要 PDF 时运行 `npx playwright install chromium` 和 `npm run export`，检查实际导出页面。交付实际文件位置与运行方式，说明仍待作者补充的材料。报告创作不表示授权上传私人报告。
+运行 `npm run build`，人工看中文换行、图像与导航。先安装导出所需浏览器 `npx playwright install chromium`，默认用 `npm run export` 生成可编辑 `slides.pptx`；需要 PDF 时改用 `npm run export:pdf`。导出后检查实际产物中的文字、图片、字体与边界。复杂公式、渐变和裁切可能局部图片化，不能把整页图片 PPTX 当作可编辑交付。交付实际文件位置与运行方式，说明仍待作者补充的材料。报告创作不表示授权上传私人报告。
 
 保留非官方说明及 `NOTICE.md`。原校徽、校园图片和剪影不属于代码 MIT 授权；示例汇报人不是可推定的原作者。
+
+网页内置 `/export` 页的 PPTX 按钮仍为整页图片方式，不读取主题的 CLI 默认格式。需要可编辑 PPTX 时使用本项目的 `npm run export`。

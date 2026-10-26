@@ -4,7 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz'
+const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz'
 const templates = {
   defense: { file: 'starter.md', label: '学位论文答辩', pages: 9 },
   paper: { file: 'paper.md', label: '论文阅读汇报', pages: 12 },
@@ -57,7 +57,7 @@ async function main() {
   const manifest = {
     name: 'ucas-slidev-presentation', private: true, type: 'module',
     engines: { node: '>=22.18.0' },
-    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --output slides.pdf' },
+    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --format pptx-editable --output slides.pptx', 'export:pdf': 'slidev export slides.md --format pdf --output slides.pdf' },
     dependencies: { 'slidev-theme-ucas': dependency },
     devDependencies: { '@slidev/cli': '53.0.0', '@slidev/parser': '53.0.0', '@slidev/theme-default': '0.25.0', 'playwright-chromium': '^1.61.1', vue: '^3.5.42' },
     overrides: { 'floating-vue': '5.2.2', dompurify: '^3.4.17', 'image-size': '^2.0.3' },
@@ -90,14 +90,16 @@ npm run export
 
 检查器自动启动独立预览，输出 .slidev-check/slides/index.html、report.json 和逐页截图，完成后关闭预览。若已有 Chrome，可用 \`npm run check -- --browser chrome\`。根据报告修改后重跑；检查器不验证研究事实或 PPTX 兼容性。
 
-网页构建在 dist/，PDF 是 slides.pdf。修改源稿后须重新构建或导出。
+网页构建在 dist/。npm run export 默认生成可编辑的 slides.pptx；需要 PDF 时运行 npm run export:pdf，生成 slides.pdf。复杂公式、渐变与裁切可能转成图片，需检查实际 PPTX。修改源稿后须重新构建或导出。
 
-本演示使用非官方社区主题 [slidev-theme-ucas](https://github.com/RoxyXu151/slidev-theme-ucas)。原模板设计韩宇（2019），素材权利说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+网页内置 /export 页的 PPTX 按钮仍导出整页图片。需要可编辑 PPTX 时使用 npm run export。
+
+本演示使用非官方社区主题 [slidev-theme-ucas](https://github.com/RoxyXu151/slidev-theme-ucas)。原模板素材权利说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 `
   const files = {
     'package.json': `${JSON.stringify(manifest, null, 2)}\n`,
     'slides.md': starter,
-    '.gitignore': 'node_modules/\ndist/\n.slidev/\n.slidev-check/\n*.pdf\n.env\n.env.*\n',
+    '.gitignore': 'node_modules/\ndist/\n.slidev/\n.slidev-check/\n*.pdf\n*.pptx\n.env\n.env.*\n',
     'README.md': readme,
     'AGENTS.md': `# 演示项目指引
 
@@ -108,7 +110,7 @@ npm run export
 - 数字、图片、文献和结论必须有来源；讲稿写在页面末尾的 HTML 注释中。
 - 修改后运行 npm run check，读取 .slidev-check/slides/report.json 并查看逐页截图。修正错误，逐项处理提醒，再重新运行。
 - 规则不核对研究事实、全部动画步骤或 PPTX 导出，仍要人工核查。不要删检查、隐藏内容来获得通过。
-- 运行 npm run build 核对构建。按用户要求导出；源稿修改后重新导出。
+- 运行 npm run build 核对构建。默认运行 npm run export 导出可编辑 PPTX；用户需要 PDF 时运行 npm run export:pdf。源稿修改后重新导出并检查实际产物。
 - 不自动将用户报告提交、推送或公开部署。保留 THIRD_PARTY_NOTICES.md。
 `,
     'THIRD_PARTY_NOTICES.md': notice,

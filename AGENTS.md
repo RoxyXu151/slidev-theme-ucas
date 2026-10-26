@@ -12,4 +12,5 @@ This is an unofficial UCAS Slidev theme adapted from the user-supplied template 
 - Maintain the portable .agents/skills/ucas-slidev skill and test its initializer outside this repository.
 - Validate meaningful changes in a browser at 1280×720 and inspect PDF boundaries; check 4:3 when changing responsive geometry. Keep preview images current.
 - Run npm run build, npm run build:starter, npm run test:skill, npm test, and the strict deck checker as appropriate.
+- Default export is editable PPTX with npm run export; use npm run export:pdf for PDF. Verify native text and visual layout in the actual PowerPoint file; formulas and some effects may be rasterized.
 - Keep demonstration data visibly labeled; do not invent research results or citations.

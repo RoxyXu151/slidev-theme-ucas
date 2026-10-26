@@ -58,7 +58,7 @@ npm run dev
 本主题从 GitHub 安装，不假定 npm 上的同名包属于本项目：
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz
 ```
 
 ```yaml
@@ -109,7 +109,9 @@ npm run export
 
 检查器输出 `.slidev-check/<源稿名>/index.html`、`report.json` 与逐页截图，检查越界、页眉/侧栏/页脚重叠、缺图、裁切、长标题和目录目标。根据结果修改后重跑。它不验证论文事实、所有点击动画或 PPTX 排版。
 
-网页是演示界面，Markdown 是源稿；修改后需要重新生成 PDF。不要把 PDF 或截图作为下一轮修改的源文件。
+`npm run export` 默认导出 **可编辑 PPTX** 到 `slides.pptx`。需要 PDF 时使用 `npm run export:pdf`，输出 `slides.pdf`。主题同时将 Slidev 的默认导出格式设为 `pptx-editable`，显式指定格式仍可覆盖。
+
+可编辑模式尽量保留文字、形状和图片对象。示例中的复杂公式会转成图片，表格保留为文字和形状，不是 PowerPoint 原生表格；渐变、裁切等效果也可能图片化。接收方需有对应中文字体，导出后应检查实际 PPTX。网页保留交互，Markdown 是源稿；修改后重新导出，不把 PPTX、PDF 或截图作为下一轮 Slidev 修改的源文件。
 
 | 命令 | 作用 |
 | --- | --- |
@@ -119,4 +121,9 @@ npm run export
 | `npm run build:starter` | 构建独立答辩网页 |
 | `npm run test:skill` | 测试技能和故障检查器 |
 | `npm test` | 浏览器、独立安装与起步稿回归 |
-| `npm run export:example` | 导出完整主题展示 PDF |
+| `npm run export` | 默认导出可编辑 `slides.pptx` |
+| `npm run export:pdf` | 导出 `slides.pdf` |
+| `npm run export:example` | 导出完整展示的可编辑 PPTX |
+| `npm run export:example:pdf` | 导出完整展示 PDF |
+
+网页内置 `/export` 页的 PPTX 按钮仍为整页图片方式，不读取主题的 CLI 默认格式。需要可编辑 PPTX 时使用本项目的 `npm run export`。

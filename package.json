@@ -1,6 +1,6 @@
 {
   "name": "slidev-theme-ucas",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "中国科学院大学 Slidev 多风格学术主题 · University of Chinese Academy of Sciences",
   "type": "module",
   "license": "MIT",
@@ -49,9 +49,11 @@
     "create:deck": "node .agents/skills/ucas-slidev/scripts/init_deck.mjs",
     "check": "node .agents/skills/ucas-slidev/scripts/check_deck.mjs",
     "test": "playwright test",
-    "test:skill": "node --test tests/skill.test.mjs tests/checker.test.mjs",
-    "export": "slidev export slides.md --output slides.pdf",
-    "export:example": "slidev export example.md --output example.pdf"
+    "test:skill": "node --test tests/skill.test.mjs tests/checker.test.mjs tests/export.test.mjs",
+    "export": "slidev export slides.md --format pptx-editable --output slides.pptx",
+    "export:example": "slidev export example.md --format pptx-editable --output example.pptx",
+    "export:pdf": "slidev export slides.md --format pdf --output slides.pdf",
+    "export:example:pdf": "slidev export example.md --format pdf --output example.pdf"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
@@ -59,7 +61,8 @@
     "@slidev/parser": "53.0.0",
     "@slidev/theme-default": "^0.25.0",
     "playwright-chromium": "^1.61.1",
-    "vue": "^3.5.42"
+    "vue": "^3.5.42",
+    "jszip": "^3.10.1"
   },
   "overrides": {
     "floating-vue": "5.2.2",
@@ -90,6 +93,9 @@
         "style": "minimal-blue",
         "footer": "中国科学院大学",
         "showPageNumber": true
+      },
+      "export": {
+        "format": "pptx-editable"
       }
     }
   }

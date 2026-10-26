@@ -27,6 +27,16 @@ test('both tables of contents navigate to the intended pages', async ({ page })=
     await expect(page).toHaveURL(new RegExp(`/${target}$`))
   }
 })
+
+test('contents numbers resolve to text for editable PowerPoint export', async ({ page })=>{
+  for(const n of [2,8]){
+    await page.goto(`/${n}`)
+    const items=page.locator(`#slide-content .slidev-page-${n} .ucas-toc-main li`)
+    await expect(items).toHaveCount(4)
+    const numbers=await items.evaluateAll(items=>items.map(item=>getComputedStyle(item,'::before').content.replace(/^"|"$/g,'')))
+    expect(numbers).toEqual(['01','02','03','04'])
+  }
+})
 test('side navigation stays separate from editable content', async ({ page })=>{
   await page.goto('/11')
   const root=page.locator('.slidev-page-11 .slidev-layout')
