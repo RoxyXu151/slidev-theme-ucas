@@ -58,7 +58,7 @@ Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Adjust the 
 Install the fixed GitHub release archive. This project does not assume that a similarly named npm package is ours.
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.0/slidev-theme-ucas-0.1.0.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz
 ```
 
 ```yaml

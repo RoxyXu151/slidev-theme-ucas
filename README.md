@@ -58,7 +58,7 @@ npm run dev
 本主题从 GitHub 安装，不假定 npm 上的同名包属于本项目：
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.0/slidev-theme-ucas-0.1.0.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz
 ```
 
 ```yaml

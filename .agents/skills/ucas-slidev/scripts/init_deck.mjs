@@ -4,7 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.0/slidev-theme-ucas-0.1.0.tgz'
+const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.1.1/slidev-theme-ucas-0.1.1.tgz'
 const templates = {
   defense: { file: 'starter.md', label: '学位论文答辩', pages: 9 },
   paper: { file: 'paper.md', label: '论文阅读汇报', pages: 12 },
@@ -120,6 +120,6 @@ npm run export
   await mkdir(path.join(destination, 'scripts'), { recursive: true })
   await cp(path.join(skillRoot, 'scripts', 'check_deck.mjs'), path.join(destination, 'scripts', 'check_deck.mjs'))
   await cp(path.join(skillRoot, 'scripts', 'lib'), path.join(destination, 'scripts', 'lib'), { recursive: true })
-  console.log(`Created BIT Slidev project: ${destination}\n${template.label} · ${template.pages} 页\nNext: enter that directory, run npm install, then npm run dev.\nReplace placeholders with verified material, then run npm run check.`)
+  console.log(`Created UCAS Slidev project: ${destination}\n${template.label} · ${template.pages} 页\nNext: enter that directory, run npm install, then npm run dev.\nReplace placeholders with verified material, then run npm run check.`)
 }
 main().catch(error => { console.error(error.message); process.exitCode = 1 })
