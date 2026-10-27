@@ -4,11 +4,11 @@
 
 **An unofficial multi-style Slidev theme for the University of Chinese Academy of Sciences (UCAS).**
 
-Adapted from the supplied UCAS PowerPoint collection for coursework, paper reviews, research meetings and thesis defenses. Text, equations, tables and data stay editable.
+Adapted from the supplied UCAS PowerPoint collection and IMECAS research-meeting master for coursework, paper reviews, research meetings and thesis defenses. Text, equations, tables and data stay editable.
 
 [Live demo](https://roxyxu151.github.io/slidev-theme-ucas/1) · [Repository](https://github.com/RoxyXu151/slidev-theme-ucas) · [Use this template](https://github.com/new?template_owner=RoxyXu151&template_name=slidev-theme-ucas) · [Authoring skill](.agents/skills/ucas-slidev/SKILL.md)
 
-![Eight styles](docs/preview/styles.jpg)
+![Nine styles](docs/preview/styles.jpg)
 
 > Theme code is MIT licensed. Extracted university marks, photographs and silhouettes retain their original rights and are excluded from that grant. Source PPT/ZIP/PDF files and fonts are not redistributed. See [NOTICE.md](NOTICE.md). UCAS is distinct from USTC.
 
@@ -24,6 +24,11 @@ Adapted from the supplied UCAS PowerPoint collection for coursework, paper revie
 | `night` | Night photography, dark surfaces and orange emphasis |
 | `autumn` | Autumn photography and warm brown/orange |
 | `sunset` | Clock tower, autumn foliage and sunset composition |
+| `ime` | Institute of Microelectronics: cream cover, laboratory photo strip, navy title band and section agenda |
+
+Use `style: ime` for the Institute of Microelectronics (IMECAS). The cover's `section` field can name the research group; `sectionIndex` highlights the current agenda item. Body titles occupy the original template's header band and should fit on one line. `footer: false` hides the footer, `showPageNumber: false` hides its number, and a custom `footer` string replaces the website text.
+
+![Institute of Microelectronics style](docs/preview/ime.jpg)
 
 ![Editable body layouts](docs/preview/layouts.jpg)
 
@@ -40,7 +45,7 @@ npm ci
 npm run dev
 ```
 
-Edit `example.md` for the 26-page showcase, or run `npm run dev:starter` to edit `slides.md`. Save Markdown to update the browser. Press `P` for presenter notes or `O` for the overview.
+Edit `example.md` for the 34-page showcase, or run `npm run dev:starter` to edit `slides.md`. Save Markdown to update the browser. Press `P` for presenter notes or `O` for the overview.
 
 Create an independent report:
 
@@ -58,7 +63,7 @@ Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Adjust the 
 Install the fixed GitHub release archive. This project does not assume that a similarly named npm package is ours.
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz
 ```
 
 ```yaml

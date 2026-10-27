@@ -2,7 +2,7 @@
 
 将真实材料、已有 slides.md 与以下任务一起交给 AI：
 
-请使用 slidev-theme-ucas 制作中文 Slidev 演示。用途：[填写]；听众：[填写]；时长：[填写]；总页数：[填写，含封面与致谢]；主题风格：[minimal-blue / minimal-red / minimal-green / tech / diagonal / night / autumn / sunset]。
+请使用 slidev-theme-ucas 制作中文 Slidev 演示。用途：[填写]；听众：[填写]；时长：[填写]；总页数：[填写，含封面与致谢]；主题风格：[minimal-blue / minimal-red / minimal-green / tech / diagonal / night / autumn / sunset / ime（微电子所）]。
 
 优先复用已有稿件，或选择 paper、meeting、defense 起步稿。主题源码仓库使用 theme: ./，独立演示使用 theme: ucas。布局接口见 `.agents/skills/ucas-slidev/references/layouts.md`。按内容选择图文、对照、三步、四宫格、公式与数字等构图，不为每页临时生成 CSS。
 

@@ -4,15 +4,15 @@
 
 **中国科学院大学 Slidev 多风格学术主题**
 
-根据用户提供的国科大 PPT 模板集合改编，将简约、科技和校园影像风格用于可编辑的网页幻灯片。适合课程展示、论文阅读、组会汇报与学位答辩。
+根据用户提供的国科大 PPT 模板集合与微电子所组会母版改编，将简约、科技和校园影像风格用于可编辑的网页幻灯片。适合课程展示、论文阅读、组会汇报与学位答辩。
 
 [在线演示](https://roxyxu151.github.io/slidev-theme-ucas/1) · [主题源码](https://github.com/RoxyXu151/slidev-theme-ucas) · [使用此模板](https://github.com/new?template_owner=RoxyXu151&template_name=slidev-theme-ucas) · [AI 写作技能](.agents/skills/ucas-slidev/SKILL.md)
 
-![八种风格](docs/preview/styles.jpg)
+![九种风格](docs/preview/styles.jpg)
 
 > 非官方社区主题。主题代码采用 MIT 许可；原校徽、校园摄影及剪影保留原有权利，不属于 MIT 授权范围。原 PPT、ZIP 和字体文件不进入仓库或安装包。详见 [NOTICE.md](NOTICE.md)。UCAS 是中国科学院大学，不是中国科学技术大学（USTC）。
 
-## 八种风格
+## 九种风格
 
 | `style` | 特点 | 预览 |
 | --- | --- | --- |
@@ -24,8 +24,13 @@
 | `night` | 校园夜景、深底与橙色强调 | [第 19 页](https://roxyxu151.github.io/slidev-theme-ucas/19) |
 | `autumn` | 金秋照片与棕橙配色 | [第 21 页](https://roxyxu151.github.io/slidev-theme-ucas/21) |
 | `sunset` | 钟楼、秋叶与夕阳构图 | [第 23 页](https://roxyxu151.github.io/slidev-theme-ucas/23) |
+| `ime` | 微电子所：米色封面、实验室照片条、深蓝页眉与章节提纲 | [第 27 页](https://roxyxu151.github.io/slidev-theme-ucas/27) |
 
 风格可以放在第一页的 `themeConfig.style`，也可以单页覆盖。正文包含双栏、整块对照、图文、大图、三图、三步流程、四宫格、公式与关键数字布局。
+
+微电子所风格使用 `style: ime`。封面页的 `section` 可填写课题组名称；目录用 `sectionIndex: 1`、`2`、`3` 等突出当前章节。正文标题放在原模板的页眉标题区，适合一行短标题。设置 `footer: false` 隐藏页脚，`showPageNumber: false` 隐藏页码；自定义 `footer` 文本会替换左下角网址。
+
+![微电子所风格](docs/preview/ime.jpg)
 
 ![可编辑正文布局](docs/preview/layouts.jpg)
 
@@ -40,7 +45,7 @@ npm ci
 npm run dev
 ```
 
-编辑 `example.md` 查看全部 26 页展示，或运行 `npm run dev:starter` 编辑 `slides.md` 答辩起步稿。保存 Markdown 后网页更新，`P` 查看讲稿，`O` 查看总览。
+编辑 `example.md` 查看全部 34 页展示，或运行 `npm run dev:starter` 编辑 `slides.md` 答辩起步稿。保存 Markdown 后网页更新，`P` 查看讲稿，`O` 查看总览。
 
 创建自己的独立报告：
 
@@ -58,7 +63,7 @@ npm run dev
 本主题从 GitHub 安装，不假定 npm 上的同名包属于本项目：
 
 ```bash
-npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz
+npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz
 ```
 
 ```yaml

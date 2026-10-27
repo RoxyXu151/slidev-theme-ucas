@@ -72,6 +72,18 @@ image: /experiment.png
 ---
 
 # 感谢聆听
+
+---
+layout: toc
+style: ime
+heading: 独立微电子所
+sectionIndex: 2
+footer: false
+showPageNumber: false
+---
+
+1. [隐藏页脚](2)
+2. [单页覆盖](3)
 `)
   execFileSync(process.execPath, [path.join(root, 'node_modules/@slidev/cli/bin/slidev.mjs'), 'build', path.join(fixture, 'slides.md'), '--out', 'dist', '--base', '/nested/'], {
     cwd: root, stdio: 'pipe', env: process.env,
@@ -120,6 +132,14 @@ image: /experiment.png
       const rect = await root.boundingBox()
       expect(rect!.width / rect!.height).toBeCloseTo(4 / 3, 2)
     }
+    await page.goto(`${base}/6`)
+    const ime=page.locator('#slide-content .slidev-page-6 .slidev-layout')
+    await expect(ime).toHaveClass(/ucas-style-ime/)
+    await expect(ime.locator('.ucas-ime-toc-active')).toHaveText('单页覆盖')
+    await expect(ime.locator('.ucas-footer')).toHaveCount(0)
+    await expect(ime.locator('.ucas-ime-seal')).toHaveAttribute('src',/^\/nested\/assets\//)
+    await expect(ime.locator('.ucas-ime-seal')).toBeVisible()
+    expect((await ime.evaluate(inspectSlide)).issues).toEqual([])
   }
   finally { await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve())) }
 })

@@ -18,6 +18,7 @@ export function inspectSlide(root) {
   const headerBounds = header?.getBoundingClientRect()
   const sideHeader = headerBounds && headerBounds.width < bounds.width * .3 && headerBounds.height > bounds.height * .7
   const top = headerBounds && !sideHeader ? headerBounds.bottom + 8 * scale : bounds.top
+  const bandTitle = root.classList.contains('ucas-style-ime') ? main.querySelector(':scope > h1:first-child, :scope > .ucas-heading h1') : null
   const elements = [...main.querySelectorAll('h1,h2,h3,p,li,dt,dd,pre,table,figure,img,.ucas-callout,.ucas-timeline,.ucas-bar-chart,.katex-display')].filter(visible)
   for (const el of elements) {
     const r = el.getBoundingClientRect()
@@ -25,6 +26,11 @@ export function inspectSlide(root) {
       add('CANVAS_OVERFLOW', '内容超出幻灯片画布；请精简、拆页或调整布局。', el)
     else if (footer && r.bottom > bottom + tolerance)
       add('FOOTER_OVERLAP', '正文进入页脚安全区域；请拆页或减少内容。', el)
+    else if (el === bandTitle && headerBounds) {
+      const seal = header.querySelector('.ucas-ime-seal')?.getBoundingClientRect()
+      if (r.left < headerBounds.left + 100 * scale - tolerance || r.right > (seal?.left ?? headerBounds.right) - 12 * scale + tolerance || r.top < headerBounds.top - tolerance || r.bottom > headerBounds.bottom - 8 * scale + tolerance)
+        add('HEADER_TITLE_OVERFLOW', '标题未完整落在微电子所模板的页眉标题区；请缩短标题或拆页。', el)
+    }
     else if (header && (r.top < top - tolerance || (sideHeader && r.left < headerBounds.right + 8 * scale - tolerance)))
       add('HEADER_OVERLAP', '正文进入页眉或侧栏导航区域。', el)
     if (el.scrollHeight > el.clientHeight + 4 && ['hidden', 'clip', 'auto', 'scroll'].includes(getComputedStyle(el).overflowY))
@@ -56,7 +62,9 @@ export function inspectSlide(root) {
   }
   return {
     title: root.querySelector('h1')?.textContent?.trim() || '',
-    section: root.querySelector('.ucas-section-label')?.textContent?.trim() || '',
+    // IME shows the slide title in its header; retain the logical chapter from
+    // frontmatter so an agenda can link to a more specific title within it.
+    section: root.getAttribute('data-ucas-section') || root.querySelector('.ucas-section-label')?.textContent?.trim() || '',
     issues,
     toc: [...root.querySelectorAll('.ucas-toc-main a[href]')].map(a => ({ label: a.textContent.trim(), href: a.getAttribute('href') })),
   }

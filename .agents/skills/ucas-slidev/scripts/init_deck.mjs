@@ -4,7 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.2.0/slidev-theme-ucas-0.2.0.tgz'
+const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz'
 const templates = {
   defense: { file: 'starter.md', label: '学位论文答辩', pages: 9 },
   paper: { file: 'paper.md', label: '论文阅读汇报', pages: 12 },
@@ -32,7 +32,7 @@ async function main() {
     options[flag.slice(2)] = args[i + 1]
   }
   if (!templates[options.template]) throw new Error(`Unknown template: ${options.template}. Choose defense, paper, or meeting.`)
-  const styles = ['minimal-blue','minimal-red','minimal-green','tech','diagonal','night','autumn','sunset']
+  const styles = ['minimal-blue','minimal-red','minimal-green','tech','diagonal','night','autumn','sunset','ime']
   if (!styles.includes(options.style)) throw new Error(`Unknown style: ${options.style}`)
   const template = templates[options.template]
   const destination = path.resolve(args[0])
@@ -52,7 +52,8 @@ async function main() {
     const relative = path.relative(destination, themeRoot).split(path.sep).join('/')
     dependency = `file:${relative || '.'}`
   }
-  const starter = (await readFile(path.join(skillRoot, 'assets', template.file), 'utf8')).replace('style: minimal-blue', `style: ${options.style}`)
+  let starter = (await readFile(path.join(skillRoot, 'assets', template.file), 'utf8')).replace('style: minimal-blue', `style: ${options.style}`)
+  if (options.style === 'ime') starter = starter.replaceAll('中国科学院大学', '中国科学院微电子研究所').replaceAll('学院或研究所', '课题组').replaceAll('你的学院', '你的课题组').replace(/^  footer:.*$/m, '  footer: 中国科学院微电子研究所')
   const notice = await readFile(path.join(skillRoot, 'assets', 'NOTICE.md'), 'utf8')
   const manifest = {
     name: 'ucas-slidev-presentation', private: true, type: 'module',

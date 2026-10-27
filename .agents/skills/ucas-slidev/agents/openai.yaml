@@ -1,4 +1,4 @@
 interface:
   display_name: "国科大 Slidev"
-  short_description: "使用国科大八种 Slidev 风格制作课程展示、组会汇报和学位论文答辩"
+  short_description: "使用国科大与微电子所九种 Slidev 风格制作课程展示、组会汇报和学位论文答辩"
   default_prompt: "请使用 $ucas-slidev，根据我提供的真实材料制作一份国科大风格的 Slidev 汇报，并检查排版。"

@@ -49,7 +49,7 @@ test('production website serves every slide and normalizes directory URLs for TO
   const errors: string[] = [], external: string[] = []
   page.on('pageerror', e => errors.push(e.message))
   page.on('request', r => { if (/^https?:/.test(r.url()) && new URL(r.url()).origin !== new URL(base).origin) external.push(r.url()) })
-  for (let i=1; i<=26; i++) {
+  for (let i=1; i<=34; i++) {
     expect((await page.goto(`${base}/${i}/`))?.status()).toBe(200)
     const root=page.locator(`#slide-content .slidev-page-${i} .slidev-layout`)
     await expect(root).toBeVisible()

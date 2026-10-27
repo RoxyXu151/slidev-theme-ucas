@@ -10,7 +10,7 @@ for (const [scenario, count] of [['paper', 12], ['meeting', 8], ['defense', 9]] 
     await mkdir('.work', { recursive: true })
     const destination = await mkdtemp(path.join(root, '.work', `${scenario}-scenario-`))
     const run = (file: string, args: string[], cwd = root) => execFileSync(process.execPath, [file, ...args], { cwd, stdio: 'pipe', env: process.env })
-    run(path.join(root, '.agents/skills/ucas-slidev/scripts/init_deck.mjs'), [destination, '--template', scenario, '--style', scenario === 'meeting' ? 'night' : scenario === 'paper' ? 'tech' : 'minimal-blue', '--theme', root])
+    run(path.join(root, '.agents/skills/ucas-slidev/scripts/init_deck.mjs'), [destination, '--template', scenario, '--style', scenario === 'meeting' ? 'night' : scenario === 'paper' ? 'tech' : 'ime', '--theme', root])
     await mkdir(path.join(destination, 'node_modules'))
     await symlink(root, path.join(destination, 'node_modules/slidev-theme-ucas'), process.platform === 'win32' ? 'junction' : 'dir')
     run(path.join(root, 'node_modules/@slidev/cli/bin/slidev.mjs'), ['build', path.join(destination, 'slides.md'), '--out', 'dist'])

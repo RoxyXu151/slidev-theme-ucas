@@ -47,6 +47,18 @@ test('initializer preserves all existing destination contents', async () => {
   assert.deepEqual(await readdir(existing), ['slides.md'])
 })
 
+test('IME reports use institute branding and retain a portable title-band checker', async () => {
+  const cwd=await sandbox(), destination=path.join(cwd,'ime report')
+  const result=run(init,[destination,'--template','meeting','--style','ime'],cwd)
+  assert.equal(result.status,0,result.stderr)
+  const source=await readFile(path.join(destination,'slides.md'),'utf8')
+  assert.match(source,/style: ime/)
+  assert.match(source,/中国科学院微电子研究所/)
+  assert.match(source,/footer: 中国科学院微电子研究所\r?\n/)
+  assert.ok(!source.includes('中国科学院大学'))
+  assert.match(await readFile(path.join(destination,'scripts/lib/checks.mjs'),'utf8'),/HEADER_TITLE_OVERFLOW/)
+})
+
 test('each scenario includes its own content flow, notes and portable checker', async () => {
   const cwd = await sandbox()
   for (const [name, marker] of [['paper', '论文阅读'], ['meeting', '组会汇报'], ['defense', '论文答辩']]) {

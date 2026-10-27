@@ -3,6 +3,7 @@
 This is an unofficial UCAS Slidev theme adapted from the user-supplied template collection.
 
 - Keep each style faithful to its supplied PPT: blue/red/green gradients and skyline, technology navigation, photographic diagonal, night, autumn and sunset designs.
+- The ime style follows the IMECAS reference: cream cover, laboratory strip, navy title band, institute marks and highlighted agenda. Keep reference research content private; only master artwork is reusable.
 - Text, tables, equations, diagrams and metrics remain editable. Do not turn full slides into bitmap backgrounds.
 - Theme assets use relative module imports; support deployment subpaths. Do not fetch online fonts or images.
 - Per-slide options override themeConfig, preserving false. Use only the public Slidev context API.

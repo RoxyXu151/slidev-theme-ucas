@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useUcasTheme } from '../composables/useUcasTheme'
 import { resolveUcasAsset } from '../composables/resolveUcasAsset'
 import UcasBrand from './UcasBrand.vue'
+import UcasImeCover from './UcasImeCover.vue'
 defineProps<{ ending?: boolean }>()
 const { options, styleName, preset, variables } = useUcasTheme()
 const minimal = computed(() => styleName.value.startsWith('minimal-'))
@@ -10,7 +11,8 @@ const photo = computed(() => options.value.image ? resolveUcasAsset(options.valu
 const whiteBrand = computed(() => ['night', 'autumn', 'sunset', 'diagonal'].includes(styleName.value))
 </script>
 <template>
-  <div class="slidev-layout ucas-cover" :class="[`ucas-style-${styleName}`, { 'ucas-ending': ending }]" :style="variables">
+  <UcasImeCover v-if="styleName === 'ime'" :ending="ending"><slot /></UcasImeCover>
+  <div v-else class="slidev-layout ucas-cover" :class="[`ucas-style-${styleName}`, { 'ucas-ending': ending }]" :style="variables">
     <template v-if="!minimal"><img class="ucas-cover-photo" :src="photo" :alt="options.imageAlt || '原模板中的国科大校园照片'" /><div class="ucas-cover-wash" /></template>
     <UcasBrand :white="whiteBrand" />
     <div class="ucas-cover-content">

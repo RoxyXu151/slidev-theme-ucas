@@ -4,6 +4,7 @@ const expected = [
   ['cover','minimal-blue'],['toc','minimal-blue'],['section','minimal-blue'],['default','minimal-blue'],['cover','minimal-red'],['cover','minimal-green'],
   ['cover','tech'],['toc','tech'],['section','tech'],['image-left','tech'],['image-right','tech'],['steps','tech'],['compare','minimal-blue'],['grid','minimal-green'],
   ['focus','minimal-blue'],['focus','night'],['cover','diagonal'],['figure','diagonal'],['cover','night'],['gallery','night'],['cover','autumn'],['image-left','autumn'],['cover','sunset'],['default','sunset'],['two-cols','tech'],['cover','tech'],
+  ['cover','ime'],['toc','ime'],['section','ime'],['default','ime'],['image-right','ime'],['compare','ime'],['steps','ime'],['cover','ime'],
 ]
 for (const [i,[layout,style]] of expected.entries()) test(`page ${i+1}: ${layout} / ${style}`, async ({ page }) => {
   const errors: string[] = [], external: string[] = []
@@ -44,6 +45,18 @@ test('side navigation stays separate from editable content', async ({ page })=>{
   await expect(root.locator('.ucas-nav-active')).toHaveText('方法设计')
   const box=await root.evaluate(el=>({nav:el.querySelector('header')!.getBoundingClientRect().right,body:el.querySelector('main')!.getBoundingClientRect().left}))
   expect(box.body-box.nav).toBeGreaterThan(20)
+})
+
+test('IME branding, highlighted agenda and title band follow the reference', async ({ page })=>{
+  await page.goto('/28')
+  const root=page.locator('#slide-content .slidev-page-28 .slidev-layout')
+  await expect(root.locator('.ucas-ime-seal')).toBeVisible()
+  await expect(root.locator('.ucas-brand')).toHaveCount(0)
+  await expect(root.locator('.ucas-ime-footer-label')).toHaveText('www.ime.ac.cn')
+  await expect(root.locator('.ucas-ime-toc-active')).toHaveText('近期工作总结')
+  expect((await root.evaluate(inspectSlide)).issues).toEqual([])
+  await root.locator('h1').evaluate(el=>{el.textContent='这是超过页眉标题区的长标题'.repeat(7)})
+  expect((await root.evaluate(inspectSlide)).issues.map(issue=>issue.code)).toContain('HEADER_TITLE_OVERFLOW')
 })
 test('formulas, metrics, timeline, tables and code remain structured', async ({ page })=>{
   await page.goto('/15'); await expect(page.locator('#slide-content .katex').first()).toBeVisible()

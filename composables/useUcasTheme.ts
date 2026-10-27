@@ -8,6 +8,7 @@ import gate from '../assets/campus-gate.webp'
 import night from '../assets/campus-night.webp'
 import autumn from '../assets/campus-autumn.webp'
 import sunset from '../assets/campus-sunset.webp'
+import ime from '../assets/ime-lab-strip.webp'
 
 export const presets = {
   'minimal-blue': { primary: '#2e3c63', accent: '#5399d4', pale: '#e6f1f9', skyline: blue, photo: gate },
@@ -18,6 +19,7 @@ export const presets = {
   night: { primary: '#e67823', accent: '#fcb66d', pale: '#1b2737', photo: night },
   autumn: { primary: '#af5819', accent: '#e38239', pale: '#fff3e7', photo: autumn },
   sunset: { primary: '#ac292c', accent: '#e7797e', pale: '#fff2ed', photo: sunset },
+  ime: { primary: '#000066', accent: '#0b5fa5', pale: '#edf4fa', photo: ime },
 }
 
 export function useUcasTheme() {
