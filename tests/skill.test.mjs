@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, readdir, symlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 import { load } from '@slidev/parser/fs'
+import { validateBrief } from '../.agents/skills/ucas-slidev/scripts/check_brief.mjs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const skill = path.join(root, '.agents', 'skills', 'ucas-slidev')
@@ -28,10 +29,13 @@ test('initializer creates a usable manifest and editable starter from another wo
   assert.equal(manifest.scripts.build, 'slidev build slides.md')
   assert.equal(manifest.scripts.export, 'slidev export slides.md --format pptx-editable --output slides.pptx')
   assert.equal(manifest.scripts['export:pdf'], 'slidev export slides.md --format pdf --output slides.pdf')
+  assert.equal(manifest.scripts['brief:check'], 'node scripts/check_brief.mjs brief.md slides.md')
   assert.match(await readFile(path.join(destination, '.gitignore'), 'utf8'), /\*\.pptx/)
   assert.match(manifest.dependencies['slidev-theme-ucas'], /^https:\/\/github\.com\/RoxyXu151\/slidev-theme-ucas\/releases\/download\//)
   assert.equal(existsSync(path.join(destination, 'node_modules')), false, 'Scaffolding must not install dependencies')
   assert.equal(existsSync(path.join(destination, 'public')), true)
+  assert.equal(existsSync(path.join(destination, 'brief.md')), true)
+  assert.equal(existsSync(path.join(destination, 'scripts/check_brief.mjs')), true)
   assert.match(await readFile(path.join(destination, 'slides.md'), 'utf8'), /theme: ucas/)
   assert.match(await readFile(path.join(destination, 'THIRD_PARTY_NOTICES.md'), 'utf8'), /中国科学院大学/)
 })
@@ -71,16 +75,48 @@ test('each scenario includes its own content flow, notes and portable checker', 
     assert.match(source, /<!--/)
     const manifest = JSON.parse(await readFile(path.join(destination, 'package.json'), 'utf8'))
     assert.equal(manifest.scripts.check, 'node scripts/check_deck.mjs')
+    assert.equal(manifest.scripts['brief:check'], 'node scripts/check_brief.mjs brief.md slides.md')
     assert.ok(manifest.devDependencies['@slidev/parser'])
     assert.equal(existsSync(path.join(destination, 'scripts/lib/checks.mjs')), true)
     assert.equal(existsSync(path.join(destination, 'scripts/verify_pptx.mjs')), true)
+    assert.equal(existsSync(path.join(destination, 'scripts/check_brief.mjs')), true)
     assert.ok(manifest.devDependencies.jszip)
     assert.equal(manifest.scripts['verify:pptx'], 'node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text')
     assert.match(await readFile(path.join(destination, 'AGENTS.md'), 'utf8'), /report\.json/)
+    const brief = await readFile(path.join(destination, 'brief.md'), 'utf8')
+    assert.match(brief, new RegExp(`叙事模式：${name === 'paper' ? 'paper-review' : name === 'meeting' ? 'progress-review' : 'thesis-defense'}`))
+    assert.equal((brief.match(/^\| \d+ \|/gm) || []).length, name === 'paper' ? 12 : name === 'meeting' ? 8 : 9)
   }
   const invalid = path.join(cwd, 'invalid scenario')
   assert.notEqual(run(init, [invalid, '--template', 'unknown'], cwd).status, 0)
   assert.equal(existsSync(invalid), false)
+})
+
+test('brief validation keeps the communication contract, narrative and page plan aligned', async () => {
+  const cwd = await sandbox()
+  const destination = path.join(cwd, 'brief validation')
+  const created = run(init, [destination, '--template', 'paper', '--style', 'tech', '--theme', root], cwd)
+  assert.equal(created.status, 0, created.stderr)
+  const incomplete = await readFile(path.join(destination, 'brief.md'), 'utf8')
+  assert.equal(validateBrief(incomplete, { slidesCount: 12 }).ok, false)
+  const completed = incomplete.replace(/\[待补充[^\]]*\]/g, '已核对材料')
+  const result = validateBrief(completed, { slidesCount: 12, deckStyle: 'tech' })
+  assert.equal(result.ok, true, result.errors.join('\n'))
+  assert.equal(result.values.pages.length, 12)
+  assert.equal(result.values['叙事模式'], 'paper-review')
+  assert.equal(result.values['导航'], 'top')
+  const mismatch = validateBrief(completed, { slidesCount: 11 })
+  assert.equal(mismatch.ok, false)
+  assert.match(mismatch.errors.join('\n'), /slides\.md 有 11 页/)
+  const unknownMode = validateBrief(completed.replace('叙事模式：paper-review', '叙事模式：unknown'), { slidesCount: 12 })
+  assert.match(unknownMode.errors.join('\n'), /未知叙事模式/)
+  const styleMismatch = validateBrief(completed.replace('视觉风格：tech', '视觉风格：night'), { slidesCount: 12, deckStyle: 'tech' })
+  assert.match(styleMismatch.errors.join('\n'), /slides\.md 使用 tech/)
+  await writeFile(path.join(destination, 'brief.md'), completed)
+  await symlink(path.join(root, 'node_modules'), path.join(destination, 'node_modules'), process.platform === 'win32' ? 'junction' : 'dir')
+  const checked = run(path.join(destination, 'scripts/check_brief.mjs'), ['brief.md', 'slides.md'], destination)
+  assert.equal(checked.status, 0, checked.stderr)
+  assert.match(checked.stdout, /简报检查通过：12 页/)
 })
 
 test('every tech starter highlights the chapter matching each content slide', async () => {

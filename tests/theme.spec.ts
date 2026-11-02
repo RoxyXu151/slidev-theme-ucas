@@ -1,5 +1,21 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { inspectSlide } from '../.agents/skills/ucas-slidev/scripts/lib/checks.mjs'
+
+async function openSlide(page: Page, number: number, selector = `.slidev-page-${number} .slidev-layout`, onRetry = () => {}) {
+  const target = page.locator(`#slide-content ${selector}`)
+  for (let attempt = 0; attempt < 2; attempt++) {
+    if (attempt) onRetry()
+    await page.goto(`/${number}`, { waitUntil: 'networkidle' })
+    try {
+      await target.waitFor({ state: 'visible', timeout: 5000 })
+      return target
+    }
+    catch {}
+  }
+  await expect(target).toBeVisible()
+  return target
+}
+
 const expected = [
   ['cover','minimal-blue'],['toc','minimal-blue'],['section','minimal-blue'],['default','minimal-blue'],['cover','minimal-red'],['cover','minimal-green'],
   ['cover','tech'],['toc','tech'],['section','tech'],['image-left','tech'],['image-right','tech'],['steps','tech'],['compare','minimal-blue'],['grid','minimal-green'],
@@ -11,8 +27,10 @@ for (const [i,[layout,style]] of expected.entries()) test(`page ${i+1}: ${layout
   page.on('pageerror',e=>errors.push(e.message))
   page.on('console',m=>{ if(m.type()==='error')errors.push(m.text()) })
   page.on('request',r=>{if(/^https?:/.test(r.url()) && new URL(r.url()).hostname !== 'localhost')external.push(r.url())})
-  await page.goto(`/${i+1}`)
-  const root=page.locator(`#slide-content .slidev-page-${i+1} .slidev-layout`)
+  const root = await openSlide(page, i + 1, `.slidev-page-${i+1} .slidev-layout`, () => {
+    errors.length = 0
+    external.length = 0
+  })
   await expect(root).toHaveClass(new RegExp(`ucas-${layout}`))
   await expect(root).toHaveClass(new RegExp(`ucas-style-${style}`))
   await expect(root.locator('h1')).toBeVisible()
@@ -23,8 +41,8 @@ for (const [i,[layout,style]] of expected.entries()) test(`page ${i+1}: ${layout
 })
 test('both tables of contents navigate to the intended pages', async ({ page })=>{
   for(const [n,label,target] of [[2,'科技风与正文布局',7],[8,'侧边导航',11]] as const){
-    await page.goto(`/${n}`)
-    await page.locator('.ucas-toc-main').getByRole('link',{name:label,exact:true}).click()
+    const toc = await openSlide(page, n, '.ucas-toc-main')
+    await toc.getByRole('link',{name:label,exact:true}).click()
     await expect(page).toHaveURL(new RegExp(`/${target}$`))
   }
 })

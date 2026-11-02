@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test'
 import { inspectSlide } from '../.agents/skills/ucas-slidev/scripts/lib/checks.mjs'
 import { execFileSync } from 'node:child_process'
 import { createServer } from 'node:http'
-import { mkdir, mkdtemp, readFile, writeFile, copyFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile, copyFile } from 'node:fs/promises'
+import os from 'node:os'
 import path from 'node:path'
 
 test('packaged theme supports 4:3, independent installation, option overrides and subpaths', async ({ page }) => {
   test.setTimeout(120_000)
   const root = process.cwd()
-  await mkdir('.work', { recursive: true })
-  const fixture = await mkdtemp(path.join(root, '.work', 'package-check-'))
+  const fixture = await mkdtemp(path.join(os.tmpdir(), 'package-check-'))
   const npmCli = process.env.npm_execpath
   if (!npmCli) throw new Error('Run the checks with npm test')
   const npm = (args: string[]) => execFileSync(process.execPath, [npmCli, ...args], {
@@ -85,7 +85,7 @@ showPageNumber: false
 1. [隐藏页脚](2)
 2. [单页覆盖](3)
 `)
-  execFileSync(process.execPath, [path.join(root, 'node_modules/@slidev/cli/bin/slidev.mjs'), 'build', path.join(fixture, 'slides.md'), '--out', 'dist', '--base', '/nested/'], {
+  execFileSync(process.execPath, [path.join(root, 'node_modules/@slidev/cli/bin/slidev.mjs'), 'build', path.join(fixture, 'slides.md'), '--out', path.join(fixture, 'dist'), '--base', '/nested/'], {
     cwd: root, stdio: 'pipe', env: process.env,
   })
   const output = path.join(fixture, 'dist')
@@ -141,5 +141,8 @@ showPageNumber: false
     await expect(ime.locator('.ucas-ime-seal')).toBeVisible()
     expect((await ime.evaluate(inspectSlide)).issues).toEqual([])
   }
-  finally { await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve())) }
+  finally {
+    await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()))
+    await rm(fixture, { recursive: true, force: true })
+  }
 })

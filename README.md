@@ -53,10 +53,11 @@ npm run dev
 npm run create:deck -- ../my-ucas-report --template defense --style tech --theme .
 cd ../my-ucas-report
 npm install
+npm run brief:check
 npm run dev
 ```
 
-`paper` 为 12 页论文阅读起步稿，`meeting` 为 8 页组会起步稿，`defense` 为 9 页答辩起步稿（默认）。页数只是起点，可按实际内容调整。脚本不覆盖非空目录、不自动安装依赖。图片放在新演示的 `public/` 中。
+`paper` 为 12 页论文阅读起步稿，`meeting` 为 8 页组会起步稿，`defense` 为 9 页答辩起步稿（默认）。新项目先生成 `brief.md`，用沟通契约、目标结果、核心结论、叙事模式和逐页计划约束 `slides.md`；完成简报后运行 `npm run brief:check`。页数只是起点，调整后同步更新简报。脚本不覆盖非空目录、不自动安装依赖。图片放在新演示的 `public/` 中。
 
 ## 已有 Slidev 项目
 
@@ -87,7 +88,7 @@ themeConfig:
 
 把 [AI_PROMPT.md](docs/AI_PROMPT.md)、真实材料和已有 Markdown 一起提供给 AI。缺少事实保留 `[待补充]`；示例数据不代表真实研究结果。
 
-本仓库附带独立的 [ucas-slidev 技能](.agents/skills/ucas-slidev/SKILL.md)。新建或大幅重排演示时，技能会确认用途与篇幅、叙事主线和视觉风格；信息已明确时直接执行，必要时一次性询问缺失项。在仓库中可以这样调用：
+本仓库附带独立的 [ucas-slidev 技能](.agents/skills/ucas-slidev/SKILL.md)。新建或大幅重排演示时，技能会确认用途与篇幅、叙事主线和视觉风格，并把决定写入项目级 `brief.md`。叙事模式与视觉风格相互独立，支持论文阅读、组会进展、学位答辩、教学讲解和中性简报五种结构，详见 [学术叙事模式](.agents/skills/ucas-slidev/references/narratives.md)。在仓库中可以这样调用：
 
 ```text
 $ucas-slidev 请根据我提供的论文制作一份国科大科技风的阅读汇报，包含讲稿并检查排版。

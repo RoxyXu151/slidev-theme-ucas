@@ -26,7 +26,7 @@ description: Create and edit University of Chinese Academy of Sciences (中国�
 3. 视觉：tech 顶部导航；交付幻灯片和讲稿
 ```
 
-把已确认内容压缩成一份简报后再开始写作。用户要求快速草稿、只修改局部或已经给出足够信息时，直接按推荐值执行，并明确说明采用了哪些默认值；后续发现的新选择只追问受影响的差异。
+把已确认内容写入项目的 `brief.md`，再开始修改 `slides.md`。简报包含沟通契约、目标结果、核心结论、叙事模式、视觉锁定和逐页计划；页数、主要观点或风格改变时先更新简报。用户要求快速草稿时仍使用简报记录采用的决定和默认值；只修改局部时仅同步受影响的页面行。
 
 ## 创建与编辑
 
@@ -39,9 +39,12 @@ node "<skill-dir>/scripts/init_deck.mjs" "<project-dir>" --template paper --styl
 
 `--template paper` 为论文阅读 12 页，`meeting` 为组会 8 页，`defense` 为答辩 9 页（默认）。这些页数只是起步稿，不覆盖用户指定的实际页数。脚本拒绝非空目标目录，不联网、不安装依赖。默认依赖固定的 GitHub 主题发布包；持有主题源码时加 `--theme "<theme-repo-dir>"`。在演示目录执行 `npm install`、`npm run dev`。
 
+初始化器会创建 `brief.md` 和可移植的简报检查器。先填写简报，再按其中的逐页计划重排 `slides.md`；完成编辑后运行 `npm run brief:check`。脚本检查沟通字段、五种叙事模式、九种视觉风格、连续页号和实际幻灯片页数。
+
 ## 从材料到页面
 
 - 按用户的听众、时长和材料组织报告。未知信息用 `[待补充]`，不编造结果、文献或图片路径。
+- 叙事模式与视觉风格独立。论文阅读、组会进展和学位答辩默认使用 `paper-review`、`progress-review`、`thesis-defense`；课程或中性材料可用 `instructional`、`neutral-briefing`。各模式的顺序、页面义务和标题倾向见 [references/narratives.md](references/narratives.md)。
 - 样式名及布局插槽见 [references/layouts.md](references/layouts.md)。简约风有蓝、红、绿三色；科技风支持顶部或侧边章节导航；校园风有斜切照片、夜景、金秋和夕阳。
 - 微电子所用 `style: ime`，复用原所徽、深蓝标题区和实验室照片条；正文标题控制为一行，目录用 `sectionIndex` 标记当前章节。不要把原参考文件中的私人电路图或研究结果当作公开素材。
 - 优先按内容选图文、比较、流程、四宫格、公式或数字布局。长段落先精简或拆页，不靠缩小文字塞内容。讲稿放在每页末尾的 HTML 注释里。
@@ -52,7 +55,7 @@ node "<skill-dir>/scripts/init_deck.mjs" "<project-dir>" --template paper --styl
 
 ## 检查与交付
 
-在演示目录执行 `npm run check -- --strict`；主题仓库检查其他源稿用 `npm run check -- 文件.md --strict`。已有 Chrome 时可加 `--browser chrome`。
+在演示目录先执行 `npm run brief:check`，再执行 `npm run check -- --strict`；主题仓库检查其他源稿用 `npm run check -- 文件.md --strict`。已有 Chrome 时可加 `--browser chrome`。简报中的主要观点、证据、布局和实际页面不一致时，先修正简报或页面计划，再继续排版检查。
 
 读取 `.slidev-check/<源稿名>/report.json` 和逐页截图，修正越界、遮挡、缺图与目录错误后重跑。完成标准是错误均已处理，提醒已修正或给出明确人工核查说明。不要删除检查、隐藏正文或缩小文字以求通过。检查器不验证研究事实、所有点击动画或 PPTX 排版。
 

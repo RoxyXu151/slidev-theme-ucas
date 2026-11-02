@@ -53,10 +53,11 @@ Create an independent report:
 npm run create:deck -- ../my-ucas-report --template paper --style tech --theme .
 cd ../my-ucas-report
 npm install
+npm run brief:check
 npm run dev
 ```
 
-Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Adjust the page count to your actual material. The initializer refuses nonempty destinations and does not install dependencies. Store your images in the new report's `public/` folder.
+Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Each project now begins with `brief.md`, which locks the communication contract, intended outcome, core message, narrative mode and page plan. Adjust both the brief and `slides.md`, then run `npm run brief:check`. The initializer refuses nonempty destinations and does not install dependencies. Store your images in the new report's `public/` folder.
 
 ## Existing Slidev projects
 
@@ -85,7 +86,7 @@ Default canvas: 16:9, 1280×720. Set `aspectRatio: 4/3` in the first headmatter 
 
 Give your assistant [AI_PROMPT.md (Chinese)](docs/AI_PROMPT.md), verified materials and the current Markdown. Missing information stays in brackets; demonstration data is not a research result.
 
-The portable [ucas-slidev skill](.agents/skills/ucas-slidev/SKILL.md) clarifies the use case, page budget, narrative and visual direction when those choices affect the deck; it proceeds directly when the request is already specific. It includes starters, initialization and the report checker. Install it with:
+The portable [ucas-slidev skill](.agents/skills/ucas-slidev/SKILL.md) clarifies the use case, page budget, narrative and visual direction when those choices affect the deck, then records them in a project-level `brief.md`. Narrative and visual style are independent, with academic modes for paper reviews, research progress, thesis defenses, teaching and neutral briefings. Install the skill with:
 
 ```bash
 node .agents/skills/ucas-slidev/scripts/install_skill.mjs

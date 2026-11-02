@@ -6,11 +6,90 @@ import { fileURLToPath } from 'node:url'
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const themeArchive = 'https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz'
 const templates = {
-  defense: { file: 'starter.md', label: '学位论文答辩', pages: 9 },
-  paper: { file: 'paper.md', label: '论文阅读汇报', pages: 12 },
-  meeting: { file: 'meeting.md', label: '组会汇报', pages: 8 },
+  defense: {
+    file: 'starter.md', label: '学位论文答辩', pages: 9, narrative: 'thesis-defense', duration: 15,
+    plan: [
+      ['cover', '开场', '论文题目与汇报信息', '无', 'cover'],
+      ['toc', '路线', '四部分论证结构', '无', 'toc'],
+      ['section', '问题', '研究背景', '无', 'section'],
+      ['content', '问题', '研究目标', '[待补充：研究问题与依据]', 'default'],
+      ['content', '方法', '研究方法与验证方案', '[待补充：设计依据与方法来源]', 'two-cols'],
+      ['content', '证据', '实验设置', '[待补充：数据、配置与评价口径]', 'default'],
+      ['evidence', '证据', '结果与讨论', '[待补充：真实结果图与来源]', 'figure'],
+      ['summary', '结论', '总结与展望', '[待补充：由前文证据支持的结论]', 'default'],
+      ['closing', '收束', '致谢', '无', 'end'],
+    ],
+  },
+  paper: {
+    file: 'paper.md', label: '论文阅读汇报', pages: 12, narrative: 'paper-review', duration: 15,
+    plan: [
+      ['cover', '开场', '论文题目与发表信息', '无', 'cover'],
+      ['toc', '路线', '论文阅读路线', '无', 'toc'],
+      ['content', '问题', '研究问题', '[待补充：论文章节与依据]', 'default'],
+      ['content', '差距', '与已有方法相比，改变了什么？', '[待补充：论文中的对比依据]', 'compare'],
+      ['method', '方法', '方法概览', '[待补充：论文方法与章节]', 'steps'],
+      ['method', '方法', '核心公式或算法', '[待补充：论文公式编号]', 'focus'],
+      ['content', '条件', '方法依赖哪些条件？', '[待补充：论文条件与适用边界]', 'default'],
+      ['evidence', '证据', '实验设置', '[待补充：数据与配置]', 'default'],
+      ['evidence', '证据', '主要结果与消融', '[待补充：图表编号与来源]', 'figure'],
+      ['content', '局限', '讨论与局限', '[待补充：区分作者结论与阅读分析]', 'default'],
+      ['summary', '结论', '结论与参考资料', '[待补充：可核对文献]', 'default'],
+      ['closing', '收束', '致谢', '无', 'end'],
+    ],
+  },
+  meeting: {
+    file: 'meeting.md', label: '组会汇报', pages: 8, narrative: 'progress-review', duration: 10,
+    plan: [
+      ['cover', '开场', '本次进展的具体主题', '无', 'cover'],
+      ['content', '进展', '上次目标与本次完成情况', '[待补充：目标基线与完成证据]', 'default'],
+      ['content', '改变', '本周最重要的一项改变', '[待补充：改变前后依据]', 'compare'],
+      ['evidence', '证据', '用证据说明进展', '[待补充：真实结果图与来源]', 'figure'],
+      ['content', '风险', '失败分析', '[待补充：失败现象与原因证据]', 'default'],
+      ['decision', '决策', '下一步计划', '[待补充：计划依据与优先级]', 'default'],
+      ['decision', '决策', '本次需要讨论的决定', '[待补充：决策选项与权衡]', 'default'],
+      ['closing', '收束', '致谢', '无', 'end'],
+    ],
+  },
 }
 const usage = 'Usage: node init_deck.mjs <project-dir> [--template defense|paper|meeting] [--theme <local-theme-dir>] [--style minimal-blue|night|...]'
+
+function renderBrief(template, style) {
+  const navigation = style === 'tech' ? 'top' : 'none'
+  const rows = template.plan
+    .map(([role, stage, claim, evidence, layout], index) => `| ${index + 1} | ${role} | ${stage} | ${claim} | ${evidence} | ${layout} |`)
+    .join('\n')
+  return `# ${template.label}简报
+
+本文件是演示内容、叙事和视觉范围的约定来源。先完成这里，再修改 slides.md；主要观点、页数或风格改变时，先更新本文件。
+
+## 沟通契约
+
+- 用途：${template.label}
+- 听众：[待补充：谁参加，已经知道什么，关心什么]
+- 场景与时长：约 ${template.duration} 分钟，现场主讲
+- 页数：${template.pages}
+- 目标结果：[待补充：听众听完应知道、相信或决定什么]
+- 核心结论：[待补充：即使只记住一句话，也应该是哪一句]
+- 叙事模式：${template.narrative}
+- 视觉风格：${style}
+- 导航：${navigation}
+- 交付物：Markdown、网页、可编辑 PPTX
+
+## 内容约束
+
+- 必须保留：[待补充：用户指定必须出现的内容]
+- 必须排除：不编造研究结果、文献、数据和图片路径
+- 来源边界：[待补充：允许使用哪些材料，哪些内容不能外传]
+
+## 逐页计划
+
+| 页 | 角色 | 叙事阶段 | 主要观点 | 证据或来源 | 布局 |
+| --- | --- | --- | --- | --- | --- |
+${rows}
+
+没有证据的封面、目录和章节页可填“无”。正文和结果页必须填写可追溯材料；未知内容保留 \`[待补充]\`，完成后再运行 \`npm run brief:check\`。
+`
+}
 
 async function main() {
   const args = process.argv.slice(2)
@@ -59,10 +138,11 @@ async function main() {
   }
   if (options.style === 'ime') starter = starter.replaceAll('中国科学院大学', '中国科学院微电子研究所').replaceAll('学院或研究所', '课题组').replaceAll('你的学院', '你的课题组').replace(/^  footer:.*$/m, '  footer: 中国科学院微电子研究所')
   const notice = await readFile(path.join(skillRoot, 'assets', 'NOTICE.md'), 'utf8')
+  const brief = renderBrief(template, options.style)
   const manifest = {
     name: 'ucas-slidev-presentation', private: true, type: 'module',
     engines: { node: '>=22.18.0' },
-    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --format pptx-editable --output slides.pptx', 'export:pdf': 'slidev export slides.md --format pdf --output slides.pdf', 'verify:pptx': 'node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text' },
+    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', 'brief:check': 'node scripts/check_brief.mjs brief.md slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --format pptx-editable --output slides.pptx', 'export:pdf': 'slidev export slides.md --format pdf --output slides.pdf', 'verify:pptx': 'node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text' },
     dependencies: { 'slidev-theme-ucas': dependency },
     devDependencies: { '@slidev/cli': '53.0.0', '@slidev/parser': '53.0.0', '@slidev/theme-default': '0.25.0', 'playwright-chromium': '^1.61.1', vue: '^3.5.42', jszip: '^3.10.1' },
     overrides: { 'floating-vue': '5.2.2', dompurify: '^3.4.17', 'image-size': '^2.0.3' },
@@ -71,23 +151,32 @@ async function main() {
 
 当前起步稿 ${template.pages} 页，含待补充标记。需要 Node.js 22.18 或以上。
 
-## 1. 启动预览
+## 1. 定义演示
+
+先编辑 brief.md，填写听众、目标结果、核心结论、来源边界和逐页计划。叙事模式与视觉风格相互独立；可用模式和具体顺序见主题技能中的 references/narratives.md。信息不足时保留 [待补充]，不要编造内容。
 
 \`\`\`bash
 npm install
+npm run brief:check
+\`\`\`
+
+## 2. 启动预览
+
+\`\`\`bash
 npm run dev
 \`\`\`
 
 打开终端地址。Slidev 是网页幻灯片；编辑 slides.md 并保存，网页自动更新。图片放在 public/，以 /filename.png 引用。每页末尾的 HTML 注释是讲稿，按 P 查看。
 
-## 2. 交给 AI 修改
+## 3. 交给 AI 修改
 
-提供真实材料和 slides.md，描述“第几页、改什么、希望怎样展示”。请 AI 先组织内容、复用已有布局、保留来源；不要编造数据，不用缩小字号塞内容。
+提供真实材料、brief.md 和 slides.md，描述“第几页、改什么、希望怎样展示”。请 AI 按简报和逐页计划组织内容、复用已有布局、保留来源；不要编造数据，不用缩小字号塞内容。
 
-## 3. 逐页检查与导出
+## 4. 逐页检查与导出
 
 \`\`\`bash
 npx playwright install chromium
+npm run brief:check
 npm run check
 npm run build
 npm run export
@@ -104,17 +193,19 @@ npm run verify:pptx
 `
   const files = {
     'package.json': `${JSON.stringify(manifest, null, 2)}\n`,
+    'brief.md': brief,
     'slides.md': starter,
     '.gitignore': 'node_modules/\ndist/\n.slidev/\n.slidev-check/\n*.pdf\n*.pptx\n.env\n.env.*\n',
     'README.md': readme,
     'AGENTS.md': `# 演示项目指引
 
-这是用户的独立演示，源稿是 slides.md，图片放 public/。主题安装于 node_modules/slidev-theme-ucas，版式接口见其中的 .agents/skills/ucas-slidev/references/layouts.md。
+这是用户的独立演示，brief.md 是沟通契约和逐页计划，源稿是 slides.md，图片放 public/。主题安装于 node_modules/slidev-theme-ucas，版式与叙事接口见其中的 .agents/skills/ucas-slidev/references/。
 
-- 先核对用户材料、用途、页数和时长，保留未知事实的待补充标记。
+- 先完成 brief.md，核对用途、听众、目标结果、核心结论、叙事模式、风格和逐页计划；信息变化时先更新简报再改 slides.md。
+- 叙事模式与视觉风格独立；论文阅读、组会进展和答辩分别使用 paper-review、progress-review、thesis-defense，其他结构见 references/narratives.md。
 - 复用现有版式和组件，保持所选国科大风格与导航一致。每页一个主题，内容过多时精简或拆页，不通过缩小字号塞内容。
 - 数字、图片、文献和结论必须有来源；讲稿写在页面末尾的 HTML 注释中。
-- 修改后运行 npm run check，读取 .slidev-check/slides/report.json 并查看逐页截图。修正错误，逐项处理提醒，再重新运行。
+- 修改后运行 npm run brief:check 和 npm run check，读取 .slidev-check/slides/report.json 并查看逐页截图。修正错误，逐项处理提醒，再重新运行。
 - 规则不核对研究事实、全部动画步骤或 PPTX 导出，仍要人工核查。不要删检查、隐藏内容来获得通过。
 - 运行 npm run build 核对构建。默认运行 npm run export 导出可编辑 PPTX，再运行 npm run verify:pptx 核对页数、原生文字与标题；用户需要 PDF 时运行 npm run export:pdf。源稿修改后重新导出并检查实际产物。
 - 不自动将用户报告提交、推送或公开部署。保留 THIRD_PARTY_NOTICES.md。
@@ -126,6 +217,7 @@ npm run verify:pptx
     await writeFile(path.join(destination, name), content, { encoding: 'utf8', flag: 'wx' })
   await mkdir(path.join(destination, 'public'), { recursive: true })
   await mkdir(path.join(destination, 'scripts'), { recursive: true })
+  await cp(path.join(skillRoot, 'scripts', 'check_brief.mjs'), path.join(destination, 'scripts', 'check_brief.mjs'))
   await cp(path.join(skillRoot, 'scripts', 'check_deck.mjs'), path.join(destination, 'scripts', 'check_deck.mjs'))
   await cp(path.join(skillRoot, 'scripts', 'verify_pptx.mjs'), path.join(destination, 'scripts', 'verify_pptx.mjs'))
   await cp(path.join(skillRoot, 'scripts', 'lib'), path.join(destination, 'scripts', 'lib'), { recursive: true })

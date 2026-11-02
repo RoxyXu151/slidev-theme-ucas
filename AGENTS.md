@@ -11,6 +11,7 @@ This is an unofficial UCAS Slidev theme adapted from the user-supplied template 
 - Code is MIT; extracted artwork and university marks are excluded. Preserve NOTICE.md. Do not infer authorship from presenter placeholders.
 - Never commit source ZIP/PPT/PDF files, fonts, credentials, node_modules, generated decks or temporary validation files.
 - Maintain the portable .agents/skills/ucas-slidev skill and test its initializer outside this repository.
+- New skill projects use brief.md as the communication and page-plan source of truth; narrative mode stays independent of visual style. Keep the brief checker, scenario starters and academic narrative reference aligned.
 - Validate meaningful changes in a browser at 1280×720 and inspect PDF boundaries; check 4:3 when changing responsive geometry. Keep preview images current.
 - Run npm run build, npm run build:starter, npm run test:skill, npm test, and the strict deck checker as appropriate.
 - Default export is editable PPTX with npm run export; use npm run export:pdf for PDF. Verify native text and visual layout in the actual PowerPoint file; formulas and some effects may be rasterized.
