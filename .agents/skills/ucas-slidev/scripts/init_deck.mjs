@@ -53,14 +53,18 @@ async function main() {
     dependency = `file:${relative || '.'}`
   }
   let starter = (await readFile(path.join(skillRoot, 'assets', template.file), 'utf8')).replace('style: minimal-blue', `style: ${options.style}`)
+  if (options.style === 'tech') {
+    const sections = [...new Set([...starter.matchAll(/^section: (.+)$/gm)].map(match => match[1]))]
+    starter = starter.replace(/^  style: tech$/m, `  style: tech\n  sections: ${JSON.stringify(sections)}`)
+  }
   if (options.style === 'ime') starter = starter.replaceAll('中国科学院大学', '中国科学院微电子研究所').replaceAll('学院或研究所', '课题组').replaceAll('你的学院', '你的课题组').replace(/^  footer:.*$/m, '  footer: 中国科学院微电子研究所')
   const notice = await readFile(path.join(skillRoot, 'assets', 'NOTICE.md'), 'utf8')
   const manifest = {
     name: 'ucas-slidev-presentation', private: true, type: 'module',
     engines: { node: '>=22.18.0' },
-    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --format pptx-editable --output slides.pptx', 'export:pdf': 'slidev export slides.md --format pdf --output slides.pdf' },
+    scripts: { dev: 'slidev slides.md', build: 'slidev build slides.md', check: 'node scripts/check_deck.mjs', export: 'slidev export slides.md --format pptx-editable --output slides.pptx', 'export:pdf': 'slidev export slides.md --format pdf --output slides.pdf', 'verify:pptx': 'node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text' },
     dependencies: { 'slidev-theme-ucas': dependency },
-    devDependencies: { '@slidev/cli': '53.0.0', '@slidev/parser': '53.0.0', '@slidev/theme-default': '0.25.0', 'playwright-chromium': '^1.61.1', vue: '^3.5.42' },
+    devDependencies: { '@slidev/cli': '53.0.0', '@slidev/parser': '53.0.0', '@slidev/theme-default': '0.25.0', 'playwright-chromium': '^1.61.1', vue: '^3.5.42', jszip: '^3.10.1' },
     overrides: { 'floating-vue': '5.2.2', dompurify: '^3.4.17', 'image-size': '^2.0.3' },
   }
   const readme = `# 国科大 · ${template.label}
@@ -87,11 +91,12 @@ npx playwright install chromium
 npm run check
 npm run build
 npm run export
+npm run verify:pptx
 \`\`\`
 
 检查器自动启动独立预览，输出 .slidev-check/slides/index.html、report.json 和逐页截图，完成后关闭预览。若已有 Chrome，可用 \`npm run check -- --browser chrome\`。根据报告修改后重跑；检查器不验证研究事实或 PPTX 兼容性。
 
-网页构建在 dist/。npm run export 默认生成可编辑的 slides.pptx；需要 PDF 时运行 npm run export:pdf，生成 slides.pdf。复杂公式、渐变与裁切可能转成图片，需检查实际 PPTX。修改源稿后须重新构建或导出。
+网页构建在 dist/。npm run export 默认生成可编辑的 slides.pptx；npm run verify:pptx 核对页数、每页原生文字与标题，拒绝整页图片。需要 PDF 时运行 npm run export:pdf，生成 slides.pdf。验证脚本不检查视觉排版；复杂公式、渐变与裁切可能转成图片，需检查实际 PPTX。修改源稿后须重新构建或导出。
 
 网页内置 /export 页的 PPTX 按钮仍导出整页图片。需要可编辑 PPTX 时使用 npm run export。
 
@@ -111,7 +116,7 @@ npm run export
 - 数字、图片、文献和结论必须有来源；讲稿写在页面末尾的 HTML 注释中。
 - 修改后运行 npm run check，读取 .slidev-check/slides/report.json 并查看逐页截图。修正错误，逐项处理提醒，再重新运行。
 - 规则不核对研究事实、全部动画步骤或 PPTX 导出，仍要人工核查。不要删检查、隐藏内容来获得通过。
-- 运行 npm run build 核对构建。默认运行 npm run export 导出可编辑 PPTX；用户需要 PDF 时运行 npm run export:pdf。源稿修改后重新导出并检查实际产物。
+- 运行 npm run build 核对构建。默认运行 npm run export 导出可编辑 PPTX，再运行 npm run verify:pptx 核对页数、原生文字与标题；用户需要 PDF 时运行 npm run export:pdf。源稿修改后重新导出并检查实际产物。
 - 不自动将用户报告提交、推送或公开部署。保留 THIRD_PARTY_NOTICES.md。
 `,
     'THIRD_PARTY_NOTICES.md': notice,
@@ -122,6 +127,7 @@ npm run export
   await mkdir(path.join(destination, 'public'), { recursive: true })
   await mkdir(path.join(destination, 'scripts'), { recursive: true })
   await cp(path.join(skillRoot, 'scripts', 'check_deck.mjs'), path.join(destination, 'scripts', 'check_deck.mjs'))
+  await cp(path.join(skillRoot, 'scripts', 'verify_pptx.mjs'), path.join(destination, 'scripts', 'verify_pptx.mjs'))
   await cp(path.join(skillRoot, 'scripts', 'lib'), path.join(destination, 'scripts', 'lib'), { recursive: true })
   console.log(`Created UCAS Slidev project: ${destination}\n${template.label} · ${template.pages} 页\nNext: enter that directory, run npm install, then npm run dev.\nReplace placeholders with verified material, then run npm run check.`)
 }

@@ -19,7 +19,15 @@ export function inspectSlide(root) {
   const sideHeader = headerBounds && headerBounds.width < bounds.width * .3 && headerBounds.height > bounds.height * .7
   const top = headerBounds && !sideHeader ? headerBounds.bottom + 8 * scale : bounds.top
   const bandTitle = root.classList.contains('ucas-style-ime') ? main.querySelector(':scope > h1:first-child, :scope > .ucas-heading h1') : null
-  const elements = [...main.querySelectorAll('h1,h2,h3,p,li,dt,dd,pre,table,figure,img,.ucas-callout,.ucas-timeline,.ucas-bar-chart,.katex-display')].filter(visible)
+  const contentSelector = 'h1,h2,h3,p,li,dt,dd,pre,table,figure,img,.ucas-callout,.ucas-timeline,.ucas-bar-chart,.katex-display'
+  const candidates = new Set(main.querySelectorAll(contentSelector))
+  // Custom components and raw HTML can render text without a paragraph wrapper.
+  // Keep semantic blocks intact instead of checking every inline/math fragment.
+  for (const el of [main, ...main.querySelectorAll('*')]) {
+    if (el.closest(`${contentSelector},script,style,.katex,math,svg`)) continue
+    if ([...el.childNodes].some(node => node.nodeType === 3 && node.textContent.trim())) candidates.add(el)
+  }
+  const elements = [...candidates].filter(visible)
   for (const el of elements) {
     const r = el.getBoundingClientRect()
     if (r.left < bounds.left - tolerance || r.right > bounds.right + tolerance || r.bottom > bounds.bottom + tolerance || r.top < bounds.top - tolerance)
@@ -33,8 +41,19 @@ export function inspectSlide(root) {
     }
     else if (header && (r.top < top - tolerance || (sideHeader && r.left < headerBounds.right + 8 * scale - tolerance)))
       add('HEADER_OVERLAP', '正文进入页眉或侧栏导航区域。', el)
-    if (el.scrollHeight > el.clientHeight + 4 && ['hidden', 'clip', 'auto', 'scroll'].includes(getComputedStyle(el).overflowY))
-      add('CLIPPED_CONTENT', '内容被裁切或需要滚动，投影时无法完整显示。', el)
+    for (let container = el; container && root.contains(container); container = container.parentElement) {
+      const style = getComputedStyle(container)
+      const clipsX = ['hidden', 'clip', 'auto', 'scroll'].includes(style.overflowX)
+      const clipsY = ['hidden', 'clip', 'auto', 'scroll'].includes(style.overflowY)
+      const clip = container.getBoundingClientRect()
+      const clipped = container === el
+        ? (clipsX && el.scrollWidth > el.clientWidth + 4) || (clipsY && el.scrollHeight > el.clientHeight + 4)
+        : (clipsX && (r.left < clip.left - tolerance || r.right > clip.right + tolerance)) || (clipsY && (r.top < clip.top - tolerance || r.bottom > clip.bottom + tolerance))
+      if (clipped) {
+        add('CLIPPED_CONTENT', '内容被裁切或需要滚动，投影时无法完整显示。', el)
+        break
+      }
+    }
   }
   for (const img of [...root.querySelectorAll('img')].filter(visible)) {
     if (!img.complete || !img.naturalWidth)
@@ -72,11 +91,17 @@ export function inspectSlide(root) {
 
 export function tocFindings(pages, baseUrl) {
   const issues = []
-  const normalize = text => text.toLowerCase().replace(/[\s\p{P}\p{S}\d]/gu, '')
+  const base = new URL(baseUrl)
+  const normalize = text => String(text ?? '').toLowerCase().replace(/[\s\p{P}\p{S}\d]/gu, '')
   for (const page of pages) {
     for (const link of page.toc || []) {
-      const url = new URL(link.href, baseUrl)
-      if (url.origin !== new URL(baseUrl).origin) continue
+      let url
+      try { url = new URL(link.href, base) }
+      catch {
+        issues.push({ slide: page.slide, code: 'TOC_INVALID_URL', severity: 'error', message: '目录链接格式无效，请修正目标地址。', text: link.label, href: link.href })
+        continue
+      }
+      if (url.origin !== base.origin) continue
       const match = /(?:\/|#)(\d+)(?:[/?#].*)?$/.exec(url.hash || url.pathname)
       if (!match) {
         issues.push({ slide: page.slide, code: 'TOC_TARGET_UNKNOWN', severity: 'warning', message: '无法识别目录目标页，请人工确认。', text: link.label, href: link.href })

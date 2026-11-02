@@ -5,6 +5,7 @@ import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
+import { load } from '@slidev/parser/fs'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const skill = path.join(root, '.agents', 'skills', 'ucas-slidev')
@@ -72,11 +73,43 @@ test('each scenario includes its own content flow, notes and portable checker', 
     assert.equal(manifest.scripts.check, 'node scripts/check_deck.mjs')
     assert.ok(manifest.devDependencies['@slidev/parser'])
     assert.equal(existsSync(path.join(destination, 'scripts/lib/checks.mjs')), true)
+    assert.equal(existsSync(path.join(destination, 'scripts/verify_pptx.mjs')), true)
+    assert.ok(manifest.devDependencies.jszip)
+    assert.equal(manifest.scripts['verify:pptx'], 'node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text')
     assert.match(await readFile(path.join(destination, 'AGENTS.md'), 'utf8'), /report\.json/)
   }
   const invalid = path.join(cwd, 'invalid scenario')
   assert.notEqual(run(init, [invalid, '--template', 'unknown'], cwd).status, 0)
   assert.equal(existsSync(invalid), false)
+})
+
+test('every tech starter highlights the chapter matching each content slide', async () => {
+  const cwd = await sandbox()
+  for (const scenario of ['paper', 'meeting', 'defense']) {
+    const destination = path.join(cwd, scenario)
+    const result = run(init, [destination, '--template', scenario, '--style', 'tech'], cwd)
+    assert.equal(result.status, 0, result.stderr)
+    const data = await load({ roots: [destination], userRoot: destination }, path.join(destination, 'slides.md'))
+    const sections = data.slides[0].frontmatter.themeConfig.sections
+    const content = data.slides.filter(slide => slide.frontmatter.section)
+    assert.ok(sections.length >= 3)
+    for (const slide of content)
+      assert.equal(sections[slide.frontmatter.sectionIndex - 1], slide.frontmatter.section)
+    assert.deepEqual([...new Set(content.map(slide => slide.frontmatter.section))], sections)
+  }
+})
+
+test('installer uses CODEX_HOME and lets an explicit destination override it', async () => {
+  const cwd = await sandbox()
+  const codexHome = path.join(cwd, 'custom codex home')
+  const env = { ...process.env, CODEX_HOME: codexHome }
+  const result = spawnSync(process.execPath, [install], { cwd, env, encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+  assert.equal(existsSync(path.join(codexHome, 'skills', 'ucas-slidev', 'SKILL.md')), true)
+  const explicit = path.join(cwd, 'explicit skill')
+  const override = spawnSync(process.execPath, [install, '--dest', explicit], { cwd, env, encoding: 'utf8' })
+  assert.equal(override.status, 0, override.stderr)
+  assert.equal(existsSync(path.join(explicit, 'SKILL.md')), true)
 })
 
 test('initializer rejects an unrelated local theme before creating output', async () => {

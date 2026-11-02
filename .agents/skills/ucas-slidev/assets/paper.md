@@ -25,7 +25,7 @@ layout: toc
 
 ---
 section: 研究问题
-sectionNumber: '01'
+sectionIndex: 1
 ---
 
 # 研究问题
@@ -41,7 +41,7 @@ sectionNumber: '01'
 ---
 layout: compare
 section: 研究问题
-sectionNumber: '01'
+sectionIndex: 1
 ---
 
 # 与已有方法相比，改变了什么？
@@ -67,7 +67,7 @@ sectionNumber: '01'
 ---
 layout: steps
 section: 方法概览
-sectionNumber: '02'
+sectionIndex: 2
 ---
 
 # 方法概览
@@ -99,7 +99,7 @@ sectionNumber: '02'
 ---
 layout: focus
 section: 方法概览
-sectionNumber: '02'
+sectionIndex: 2
 ---
 
 # 核心公式或算法
@@ -120,7 +120,7 @@ sectionNumber: '02'
 
 ---
 section: 方法概览
-sectionNumber: '02'
+sectionIndex: 2
 ---
 
 # 方法依赖哪些条件？
@@ -135,7 +135,7 @@ sectionNumber: '02'
 
 ---
 section: 实验设置
-sectionNumber: '03'
+sectionIndex: 3
 ---
 
 # 实验设置
@@ -152,7 +152,7 @@ sectionNumber: '03'
 ---
 layout: figure
 section: 实验设置
-sectionNumber: '03'
+sectionIndex: 3
 caption: '[待补充：图表编号、样本量、误差与来源]'
 ---
 
@@ -166,7 +166,7 @@ caption: '[待补充：图表编号、样本量、误差与来源]'
 
 ---
 section: 讨论与局限
-sectionNumber: '04'
+sectionIndex: 4
 ---
 
 # 讨论与局限
@@ -179,7 +179,7 @@ sectionNumber: '04'
 
 ---
 section: 讨论与局限
-sectionNumber: '04'
+sectionIndex: 4
 ---
 
 # 结论与参考资料
@@ -196,7 +196,6 @@ sectionNumber: '04'
 
 ---
 layout: end
-variant: green
 subtitle: 论文阅读 · 欢迎讨论
 ---
 

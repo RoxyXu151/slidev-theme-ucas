@@ -55,6 +55,7 @@
     "export": "slidev export slides.md --format pptx-editable --output slides.pptx",
     "export:example": "slidev export example.md --format pptx-editable --output example.pptx",
     "export:pdf": "slidev export slides.md --format pdf --output slides.pdf",
+    "verify:pptx": "node scripts/verify_pptx.mjs slides.pptx --source slides.md --require-text",
     "export:example:pdf": "slidev export example.md --format pdf --output example.pdf"
   },
   "devDependencies": {

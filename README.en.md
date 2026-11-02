@@ -4,13 +4,13 @@
 
 **An unofficial multi-style Slidev theme for the University of Chinese Academy of Sciences (UCAS).**
 
-Adapted from the supplied UCAS PowerPoint collection and IMECAS research-meeting master for coursework, paper reviews, research meetings and thesis defenses. Text, equations, tables and data stay editable.
+Adapted from [PowerPoint templates published on the UCAS resource portal](https://onestop.ucas.edu.cn/Home/Info/e1e7b553-14c1-42f3-910a-88d25ebf9c48) and an IMECAS research-meeting master for coursework, paper reviews, research meetings and thesis defenses.
 
 [Live demo](https://roxyxu151.github.io/slidev-theme-ucas/1) · [Repository](https://github.com/RoxyXu151/slidev-theme-ucas) · [Use this template](https://github.com/new?template_owner=RoxyXu151&template_name=slidev-theme-ucas) · [Authoring skill](.agents/skills/ucas-slidev/SKILL.md)
 
 ![Nine styles](docs/preview/styles.jpg)
 
-> Theme code is MIT licensed. Extracted university marks, photographs and silhouettes retain their original rights and are excluded from that grant. Source PPT/ZIP/PDF files and fonts are not redistributed. See [NOTICE.md](NOTICE.md). UCAS is distinct from USTC.
+> Community theme with MIT-licensed code. Template artwork retains its original rights; sources and extraction records are documented in [NOTICE.md](NOTICE.md).
 
 ## Styles and layouts
 
@@ -60,7 +60,7 @@ Starters: `paper` (12 pages), `meeting` (8), `defense` (9, default). Adjust the 
 
 ## Existing Slidev projects
 
-Install the fixed GitHub release archive. This project does not assume that a similarly named npm package is ours.
+Install the GitHub release archive:
 
 ```bash
 npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz
@@ -91,7 +91,7 @@ The portable [ucas-slidev skill](.agents/skills/ucas-slidev/SKILL.md) includes s
 node .agents/skills/ucas-slidev/scripts/install_skill.mjs
 ```
 
-Default destination: `~/.codex/skills/ucas-slidev`. Existing directories are never overwritten; use `--dest` for another location. Reopen the session if discovery has not refreshed. Invoke `$ucas-slidev` with your actual material and presentation requirements.
+Default destination: `$CODEX_HOME/skills/ucas-slidev` when `CODEX_HOME` is set, otherwise `~/.codex/skills/ucas-slidev`. Existing directories are never overwritten; `--dest` overrides the default location. Reopen the session if discovery has not refreshed. Invoke `$ucas-slidev` with your actual material and presentation requirements.
 
 ## Verify and export
 
@@ -100,6 +100,7 @@ npx playwright install chromium
 npm run check -- slides.md --strict
 npm run build:starter
 npm run export
+npm run verify:pptx
 ```
 
 Add `--browser chrome` when using an existing Chrome installation. Linux may need `npx playwright install --with-deps chromium` and Noto Sans CJK fonts.
@@ -111,3 +112,5 @@ The checker writes HTML, JSON and page screenshots under `.slidev-check/<entry-n
 `npm run export` defaults to **editable PPTX** (`slides.pptx`). Use `npm run export:pdf` for `slides.pdf`. The theme also defaults Slidev export to `pptx-editable`; an explicit format overrides it. Text, basic shapes and images remain editable where supported. The showcase's complex formulas become images; tables become editable text and shapes rather than native PowerPoint tables. Gradients and clipping may also become images, and recipients need the corresponding fonts. Inspect the actual PPTX and keep Markdown as the source for future Slidev edits.
 
 The built-in browser `/export` page still produces image-based PPTX and does not use the CLI format default. Use `npm run export` for editable PPTX.
+
+`npm run verify:pptx` checks the slide count, native text on every slide and retained titles. It rejects image-only slides and missing titles, but does not validate visual layout. The verifier and command are also copied into independent presentations.

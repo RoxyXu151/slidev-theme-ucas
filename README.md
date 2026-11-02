@@ -4,13 +4,13 @@
 
 **中国科学院大学 Slidev 多风格学术主题**
 
-根据用户提供的国科大 PPT 模板集合与微电子所组会母版改编，将简约、科技和校园影像风格用于可编辑的网页幻灯片。适合课程展示、论文阅读、组会汇报与学位答辩。
+基于[国科大综合信息网发布的 PPT 模板](https://onestop.ucas.edu.cn/Home/Info/e1e7b553-14c1-42f3-910a-88d25ebf9c48)与微电子所组会母版改编，提供简约、科技和校园影像风格。适合课程展示、论文阅读、组会汇报与学位答辩。
 
 [在线演示](https://roxyxu151.github.io/slidev-theme-ucas/1) · [主题源码](https://github.com/RoxyXu151/slidev-theme-ucas) · [使用此模板](https://github.com/new?template_owner=RoxyXu151&template_name=slidev-theme-ucas) · [AI 写作技能](.agents/skills/ucas-slidev/SKILL.md)
 
 ![九种风格](docs/preview/styles.jpg)
 
-> 非官方社区主题。主题代码采用 MIT 许可；原校徽、校园摄影及剪影保留原有权利，不属于 MIT 授权范围。原 PPT、ZIP 和字体文件不进入仓库或安装包。详见 [NOTICE.md](NOTICE.md)。UCAS 是中国科学院大学，不是中国科学技术大学（USTC）。
+> 社区主题，代码采用 MIT 许可。原模板素材保留原有权利，来源与提取记录见 [NOTICE.md](NOTICE.md)。
 
 ## 九种风格
 
@@ -60,7 +60,7 @@ npm run dev
 
 ## 已有 Slidev 项目
 
-本主题从 GitHub 安装，不假定 npm 上的同名包属于本项目：
+安装 GitHub 发布包：
 
 ```bash
 npm install https://github.com/RoxyXu151/slidev-theme-ucas/releases/download/v0.3.0/slidev-theme-ucas-0.3.0.tgz
@@ -99,7 +99,7 @@ $ucas-slidev 请根据我提供的论文制作一份国科大科技风的阅读�
 node .agents/skills/ucas-slidev/scripts/install_skill.mjs
 ```
 
-默认安装到 `~/.codex/skills/ucas-slidev`；已有目录不会被覆盖。可用 `--dest /path/to/ucas-slidev` 自定义位置。技能包含三类起步稿、初始化器和独立报告检查器，不包含源 PPT 或字体。若尚未显示，请重新打开会话。
+设置 `CODEX_HOME` 时默认安装到 `$CODEX_HOME/skills/ucas-slidev`，否则使用 `~/.codex/skills/ucas-slidev`；已有目录不会被覆盖。可用 `--dest /path/to/ucas-slidev` 覆盖默认位置。技能包含三类起步稿、初始化器、独立报告检查器及 PPTX 可编辑性验证脚本，不包含源 PPT 或字体。若尚未显示，请重新打开会话。
 
 ## 检查与导出
 
@@ -108,6 +108,7 @@ npx playwright install chromium
 npm run check -- slides.md --strict
 npm run build:starter
 npm run export
+npm run verify:pptx
 ```
 
 已有 Chrome 时，可加 `--browser chrome`。Linux 可运行 `npx playwright install --with-deps chromium` 并安装 Noto Sans CJK。
@@ -115,6 +116,8 @@ npm run export
 检查器输出 `.slidev-check/<源稿名>/index.html`、`report.json` 与逐页截图，检查越界、页眉/侧栏/页脚重叠、缺图、裁切、长标题和目录目标。根据结果修改后重跑。它不验证论文事实、所有点击动画或 PPTX 排版。
 
 `npm run export` 默认导出 **可编辑 PPTX** 到 `slides.pptx`。需要 PDF 时使用 `npm run export:pdf`，输出 `slides.pdf`。主题同时将 Slidev 的默认导出格式设为 `pptx-editable`，显式指定格式仍可覆盖。
+
+`npm run verify:pptx` 核对 PPTX 页数、每页原生文字和标题，拒绝整页图片或标题丢失的导出；它不验证视觉排版。该脚本与命令也随独立演示初始化。
 
 可编辑模式尽量保留文字、形状和图片对象。示例中的复杂公式会转成图片，表格保留为文字和形状，不是 PowerPoint 原生表格；渐变、裁切等效果也可能图片化。接收方需有对应中文字体，导出后应检查实际 PPTX。网页保留交互，Markdown 是源稿；修改后重新导出，不把 PPTX、PDF 或截图作为下一轮 Slidev 修改的源文件。
 
@@ -127,6 +130,7 @@ npm run export
 | `npm run test:skill` | 测试技能和故障检查器 |
 | `npm test` | 浏览器、独立安装与起步稿回归 |
 | `npm run export` | 默认导出可编辑 `slides.pptx` |
+| `npm run verify:pptx` | 核对 PPTX 页数、原生文字和标题 |
 | `npm run export:pdf` | 导出 `slides.pdf` |
 | `npm run export:example` | 导出完整展示的可编辑 PPTX |
 | `npm run export:example:pdf` | 导出完整展示 PDF |

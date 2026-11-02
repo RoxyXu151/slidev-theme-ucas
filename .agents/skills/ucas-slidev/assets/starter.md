@@ -30,6 +30,8 @@ layout: toc
 
 ---
 layout: section
+section: 研究背景
+sectionIndex: 1
 number: '01'
 subtitle: BACKGROUND
 ---
@@ -40,7 +42,7 @@ subtitle: BACKGROUND
 
 ---
 section: 研究背景
-sectionNumber: '01'
+sectionIndex: 1
 ---
 
 # 研究目标
@@ -58,7 +60,7 @@ sectionNumber: '01'
 ---
 layout: two-cols
 section: 研究方法
-sectionNumber: '02'
+sectionIndex: 2
 ---
 
 # 研究方法
@@ -83,7 +85,7 @@ sectionNumber: '02'
 
 ---
 section: 实验与分析
-sectionNumber: '03'
+sectionIndex: 3
 ---
 
 # 实验设置
@@ -100,7 +102,7 @@ sectionNumber: '03'
 ---
 layout: figure
 section: 实验与分析
-sectionNumber: '03'
+sectionIndex: 3
 caption: 请替换为真实结果，并填写数据来源、样本量和误差范围
 ---
 
@@ -114,7 +116,7 @@ caption: 请替换为真实结果，并填写数据来源、样本量和误差�
 
 ---
 section: 总结与展望
-sectionNumber: '04'
+sectionIndex: 4
 ---
 
 # 总结与展望
@@ -131,7 +133,6 @@ sectionNumber: '04'
 
 ---
 layout: end
-variant: green
 presenter: 你的姓名
 advisor: 导师姓名
 subtitle: THANK YOU

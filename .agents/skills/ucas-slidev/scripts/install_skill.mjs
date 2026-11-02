@@ -8,12 +8,13 @@ const source = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 async function main() {
   const args = process.argv.slice(2)
   if (args.length === 1 && ['--help', '-h'].includes(args[0])) {
-    console.log('Usage: node install_skill.mjs [--dest <skill-folder>]\nDefaults to ~/.codex/skills/ucas-slidev. Existing destinations are never overwritten.')
+    console.log('Usage: node install_skill.mjs [--dest <skill-folder>]\nDefaults to $CODEX_HOME/skills/ucas-slidev, or ~/.codex/skills/ucas-slidev when CODEX_HOME is unset. Existing destinations are never overwritten.')
     return
   }
   if (args.length && !(args.length === 2 && args[0] === '--dest' && args[1]))
     throw new Error('Usage: node install_skill.mjs [--dest <skill-folder>]')
-  const destination = args.length ? path.resolve(args[1]) : path.join(os.homedir(), '.codex', 'skills', 'ucas-slidev')
+  const codexHome = process.env.CODEX_HOME || path.join(os.homedir(), '.codex')
+  const destination = args.length ? path.resolve(args[1]) : path.resolve(codexHome, 'skills', 'ucas-slidev')
   const relative = path.relative(source, destination)
   if (!relative || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative)))
     throw new Error('The installation destination must be outside the source skill folder')

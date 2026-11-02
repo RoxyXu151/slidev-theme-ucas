@@ -2,6 +2,11 @@
 
 这是中国科学院大学（UCAS）的非官方社区 Slidev 主题，不表示学校对本项目的认证或背书。
 
+## 模板来源
+
+- 国科大 PPT 模板来自[中国科学院大学综合信息网「PPT模板」资源页](https://onestop.ucas.edu.cn/Home/Info/e1e7b553-14c1-42f3-910a-88d25ebf9c48)。该页提供「中国科学院大学PPT模板（三套）下载」「国科大2018年PPT模板」及「国科大2023年PPT模板」。本项目依据用户提供的模板集合改编为 Slidev，素材提取记录见下表。
+- 微电子所 `ime` 风格来自用户提供的组会母版，具体来源和提取范围见「微电子所风格补充来源」。
+
 ## 代码与原始素材
 
 - 本项目的主题代码、文档和脚本采用 MIT 许可，见 LICENSE。
@@ -43,5 +48,7 @@
 ## English artwork notice
 
 Theme code is MIT licensed. Extracted UCAS marks, campus photographs and silhouettes retain their original rights and are excluded from the MIT grant. No source PPT/ZIP/PDF files or fonts are redistributed. Existing photographic credits and watermarks are retained. Presenter placeholders and document metadata do not establish authorship. This is an unofficial community adaptation.
+
+The UCAS PowerPoint templates originate from the [UCAS resource portal's PPT template page](https://onestop.ucas.edu.cn/Home/Info/e1e7b553-14c1-42f3-910a-88d25ebf9c48), which lists a three-template collection and the 2018 and 2023 collections. This project adapts the supplied collection into Slidev; the extraction records above identify the source files used.
 
 The IMECAS style additionally adapts generic master artwork from the supplied research-meeting deck. Institute marks, calligraphy, circuit texture and laboratory photography retain their original rights and are excluded from the MIT grant. The source deck and its research content are not redistributed.

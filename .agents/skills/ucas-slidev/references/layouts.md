@@ -42,7 +42,7 @@ sections: ['研究背景', '研究方法', '实验分析', '总结展望']
 sectionIndex: 2
 ```
 
-`navigation: side` 仅对 tech 生效。省略 sections 时页眉显示 section。
+`navigation: side` 仅对 tech 生效。科技风初始化器按模板章节填写 sections 和单页 sectionIndex；调整章节后同步更新。省略 sections 时页眉显示 section。
 
 ## 布局插槽
 

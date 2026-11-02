@@ -1,6 +1,6 @@
 ---
 name: ucas-slidev
-description: Create and edit University of Chinese Academy of Sciences (中国科学院大学、国科大、UCAS) and Institute of Microelectronics (中科院微电子所、IMECAS) Slidev presentations with slidev-theme-ucas. Use for coursework, research meetings and thesis defenses; not USTC (中国科学技术大学) or native PowerPoint editing.
+description: Create and edit University of Chinese Academy of Sciences (中国科学院大学、国科大、UCAS) and Institute of Microelectronics (中科院微电子所、IMECAS) Slidev presentations with slidev-theme-ucas. Use for coursework, research meetings and thesis defenses; not for native PowerPoint editing.
 ---
 
 # 国科大 Slidev 幻灯片
@@ -25,7 +25,7 @@ node "<skill-dir>/scripts/init_deck.mjs" "<project-dir>" --template paper --styl
 - 微电子所用 `style: ime`，复用原所徽、深蓝标题区和实验室照片条；正文标题控制为一行，目录用 `sectionIndex` 标记当前章节。不要把原参考文件中的私人电路图或研究结果当作公开素材。
 - 优先按内容选图文、比较、流程、四宫格、公式或数字布局。长段落先精简或拆页，不靠缩小文字塞内容。讲稿放在每页末尾的 HTML 注释里。
 - `two-cols`、`compare` 的默认插槽放总标题，正文放 `::left::`、`::right::`。图文布局的默认插槽放正文，总标题放 `::title::`。
-- 同一报告通常保持一个全局 `themeConfig.style`，除非用户需要风格展示。科技导航用 `sections` 数组和从 1 开始的 `sectionIndex`；`navigation: side` 仅对 tech 生效。
+- 同一报告通常保持一个全局 `themeConfig.style`，除非用户需要风格展示。科技风起步稿自动填写 `sections` 数组和从 1 开始的 `sectionIndex`，调整章节后同步更新；`navigation: side` 仅对 tech 生效。
 - 图片放演示的 `public/`，用 `/filename.png` 引用并提供 `imageAlt`、`caption`。科研图默认 contain，不裁切证据。封面和致谢元信息来自各自页面，需要时重复填写。
 - 默认 16:9、1280×720；可在 headmatter 设置 `aspectRatio: 4/3`。使用系统中文字体，不安装或分发原包商业字体。
 
@@ -35,7 +35,7 @@ node "<skill-dir>/scripts/init_deck.mjs" "<project-dir>" --template paper --styl
 
 读取 `.slidev-check/<源稿名>/report.json` 和逐页截图，修正越界、遮挡、缺图与目录错误后重跑。完成标准是错误均已处理，提醒已修正或给出明确人工核查说明。不要删除检查、隐藏正文或缩小文字以求通过。检查器不验证研究事实、所有点击动画或 PPTX 排版。
 
-运行 `npm run build`，人工看中文换行、图像与导航。先安装导出所需浏览器 `npx playwright install chromium`，默认用 `npm run export` 生成可编辑 `slides.pptx`；需要 PDF 时改用 `npm run export:pdf`。导出后检查实际产物中的文字、图片、字体与边界。复杂公式、渐变和裁切可能局部图片化，不能把整页图片 PPTX 当作可编辑交付。交付实际文件位置与运行方式，说明仍待作者补充的材料。报告创作不表示授权上传私人报告。
+运行 `npm run build`，人工看中文换行、图像与导航。先安装导出所需浏览器 `npx playwright install chromium`，默认用 `npm run export` 生成可编辑 `slides.pptx`，再运行 `npm run verify:pptx` 核对页数、每页原生文字与标题；需要 PDF 时改用 `npm run export:pdf`。验证脚本随独立演示复制，不检查视觉排版，仍须检查实际产物中的文字、图片、字体与边界。复杂公式、渐变和裁切可能局部图片化，不能把整页图片 PPTX 当作可编辑交付。交付实际文件位置与运行方式，说明仍待作者补充的材料。报告创作不表示授权上传私人报告。
 
 保留非官方说明及 `NOTICE.md`。原校徽、校园图片和剪影不属于代码 MIT 授权；示例汇报人不是可推定的原作者。
 

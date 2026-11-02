@@ -17,7 +17,7 @@ themeConfig:
 
 ---
 section: 目标与进展
-sectionNumber: '01'
+sectionIndex: 1
 ---
 
 # 上次目标，这次完成了什么？
@@ -33,7 +33,7 @@ sectionNumber: '01'
 ---
 layout: compare
 section: 目标与进展
-sectionNumber: '01'
+sectionIndex: 1
 ---
 
 # 本周最重要的一项改变
@@ -57,7 +57,7 @@ sectionNumber: '01'
 ---
 layout: figure
 section: 实验与证据
-sectionNumber: '02'
+sectionIndex: 2
 caption: '[待补充：数据来源、实验配置、样本量与误差]'
 ---
 
@@ -71,7 +71,7 @@ caption: '[待补充：数据来源、实验配置、样本量与误差]'
 
 ---
 section: 实验与证据
-sectionNumber: '02'
+sectionIndex: 2
 ---
 
 # 失败分析
@@ -86,7 +86,7 @@ sectionNumber: '02'
 
 ---
 section: 下一步计划
-sectionNumber: '03'
+sectionIndex: 3
 ---
 
 # 下一步计划
@@ -101,7 +101,7 @@ sectionNumber: '03'
 
 ---
 section: 下一步计划
-sectionNumber: '03'
+sectionIndex: 3
 ---
 
 # 本次需要讨论的决定
@@ -118,7 +118,6 @@ sectionNumber: '03'
 
 ---
 layout: end
-variant: green
 subtitle: 组会汇报 · 欢迎讨论
 ---
 
