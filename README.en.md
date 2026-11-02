@@ -85,7 +85,7 @@ Default canvas: 16:9, 1280×720. Set `aspectRatio: 4/3` in the first headmatter 
 
 Give your assistant [AI_PROMPT.md (Chinese)](docs/AI_PROMPT.md), verified materials and the current Markdown. Missing information stays in brackets; demonstration data is not a research result.
 
-The portable [ucas-slidev skill](.agents/skills/ucas-slidev/SKILL.md) includes starters, initialization and the report checker. Install it with:
+The portable [ucas-slidev skill](.agents/skills/ucas-slidev/SKILL.md) clarifies the use case, page budget, narrative and visual direction when those choices affect the deck; it proceeds directly when the request is already specific. It includes starters, initialization and the report checker. Install it with:
 
 ```bash
 node .agents/skills/ucas-slidev/scripts/install_skill.mjs

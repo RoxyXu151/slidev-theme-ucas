@@ -87,7 +87,7 @@ themeConfig:
 
 把 [AI_PROMPT.md](docs/AI_PROMPT.md)、真实材料和已有 Markdown 一起提供给 AI。缺少事实保留 `[待补充]`；示例数据不代表真实研究结果。
 
-本仓库附带独立的 [ucas-slidev 技能](.agents/skills/ucas-slidev/SKILL.md)。在仓库中可以直接调用：
+本仓库附带独立的 [ucas-slidev 技能](.agents/skills/ucas-slidev/SKILL.md)。新建或大幅重排演示时，技能会确认用途与篇幅、叙事主线和视觉风格；信息已明确时直接执行，必要时一次性询问缺失项。在仓库中可以这样调用：
 
 ```text
 $ucas-slidev 请根据我提供的论文制作一份国科大科技风的阅读汇报，包含讲稿并检查排版。
